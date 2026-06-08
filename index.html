@@ -145,7 +145,6 @@
     <li><a href="#problem">The Challenge</a></li>
     <li><a href="#technology">Technology</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="#contact" class="nav-cta">Contact us</a></li>
   </ul>
 </nav>
 
@@ -313,26 +312,8 @@
     </p>
 
     <!-- comparison.jpeg figure -->
-    <div class="cmp-fig-grid" style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;">
-      <div style="border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--glow);">
-        <img src="comparison.jpeg" alt="Energy and latency comparison chart — Loop Labs photonic chip vs GPU" style="width:100%;height:auto;display:block;" />
-      </div>
-      <div>
-        <span class="eyebrow" style="margin-bottom:12px;">Reading the chart</span>
-        <p style="color:var(--muted);line-height:1.75;margin-bottom:16px;">
-          Each bar represents the total energy consumed per inference on a given
-          platform. The GPU bar (red) reflects the combined cost of data movement
-          from memory, arithmetic compute, and the chip's static power draw over
-          the inference window.
-        </p>
-        <p style="color:var(--muted);line-height:1.75;">
-          The Loop Labs photonic bar (cyan) covers every step in our circuit:
-          weight programming, signal conversion, optical amplification, and laser
-          supply. Even accounting for all these costs, our chip uses
-          <strong style="color:var(--accent3);">135× less energy</strong> and completes
-          the same inference <strong style="color:var(--accent);">6× faster</strong>.
-        </p>
-      </div>
+    <div style="margin-top:56px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--glow);">
+      <img src="comparison.jpeg" alt="Energy and latency comparison chart — Loop Labs photonic chip vs GPU" style="width:100%;height:auto;display:block;" />
     </div>
   </div>
 </section>
@@ -405,6 +386,8 @@
         </p>
       </div>
 
+    </div><!-- /tech-grid -->
+
     <!-- How photonic inference works -->
     <div style="margin-top:72px;">
       <span class="eyebrow" style="display:block;text-align:center;margin-bottom:14px;">How it works</span>
@@ -451,17 +434,6 @@
         </div>
       </div>
 
-      <!-- Chip mesh diagram -->
-      <div class="mesh-img-wrap" style="margin-top:48px;">
-        <p class="eyebrow" style="margin-bottom:16px;">Modulator mesh — optical coupling topology</p>
-        <img src="chip_mesh.svg" alt="Brick-wall MZM mesh showing two columns of optical modulators coupling adjacent waveguides in a staggered pattern" />
-        <p class="mesh-caption">
-          Each rectangle is a Mach-Zehnder Modulator coupling two adjacent waveguides.
-          Even columns (blue) and odd columns (purple) alternate to implement a full
-          matrix transformation across multiple loop cycles. The dashed border shows
-          the recirculating path.
-        </p>
-      </div>
     </div>
 
   </div>
@@ -543,25 +515,6 @@
   </div>
 </section>
 
-<!-- ── Contact ──────────────────────────────────────────────────────────── -->
-<section id="contact">
-  <div class="container">
-    <div class="contact-inner">
-      <span class="eyebrow">Get in touch</span>
-      <h2 class="section-title">Interested in photonic AI?</h2>
-      <p class="section-sub">
-        We are looking for research collaborators, early customers, and
-        investors who share our conviction that the next generation of AI
-        infrastructure will be built from light.
-      </p>
-      <div class="contact-actions">
-        <a href="mailto:emanuele@oriqx.com" class="btn-primary">Email us →</a>
-        <a href="#about" class="btn-outline">Learn more</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── Footer ───────────────────────────────────────────────────────────── -->
 <footer>
   <div class="footer-inner">
@@ -573,7 +526,6 @@
     <ul class="footer-links">
       <li><a href="#technology">Technology</a></li>
       <li><a href="#comparison">Benchmark</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
 </footer>
