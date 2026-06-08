@@ -221,6 +221,21 @@
           coherently with <strong style="color:var(--text)">near-zero marginal energy per operation</strong>.
           Once the weights are set, the optical field propagates and computes for free.
         </p>
+        <p style="color:var(--muted);margin-top:24px;margin-bottom:12px;font-weight:600;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;">Why existing photonic chips still fail</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+          <div style="background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.18);border-radius:8px;padding:12px 16px;">
+            <strong style="color:#e87060;">OEO Bottleneck</strong><span style="color:var(--muted);font-size:0.88rem;"> — ADC/DAC conversions between optical and electronic chips negate the energy savings of the optical core.</span>
+          </div>
+          <div style="background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.18);border-radius:8px;padding:12px 16px;">
+            <strong style="color:#e87060;">Analog Noise &amp; Precision</strong><span style="color:var(--muted);font-size:0.88rem;"> — Thermal drift and fabrication variations limit bit-precision, blocking modern generative AI accuracy.</span>
+          </div>
+          <div style="background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.18);border-radius:8px;padding:12px 16px;">
+            <strong style="color:#e87060;">No Native Non-Linearity</strong><span style="color:var(--muted);font-size:0.88rem;"> — Every competitor routes data back to electronics for activation functions, adding latency at every layer.</span>
+          </div>
+        </div>
+        <p style="color:rgba(122,143,168,0.7);font-size:0.88rem;line-height:1.7;">
+          Loop Labs is engineered to overcome all three of these hurdles simultaneously.
+        </p>
       </div>
       <div class="problem-image-wrap">
         <img src="ai_energy.png" alt="AI energy consumption growth chart" />
@@ -328,7 +343,7 @@
       held photonic computing back — together they make fully on-chip AI inference possible.
     </p>
 
-    <div class="tech-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="tech-grid" style="grid-template-columns: repeat(2, 1fr);">
 
       <!-- Innovation 1: On-chip non-linear activation -->
       <div class="tech-card" style="border-color:rgba(0,212,255,0.25);">
@@ -355,15 +370,15 @@
         <h3>Lithium Niobate Platform</h3>
         <div style="display:inline-block;background:rgba(123,92,250,0.08);border:1px solid rgba(123,92,250,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:var(--accent2);letter-spacing:.05em;font-weight:600;margin-bottom:14px;">Best-in-class material</div>
         <p style="margin-bottom:14px;">
-          <strong style="color:var(--text)">Ultra-low optical loss</strong> — thin-film lithium niobate
-          waveguides preserve signal integrity across the chip, minimising the power
-          the laser must supply to maintain a usable signal-to-noise ratio.
+          <strong style="color:var(--text)">Ultra-low optical loss</strong> (~3 dB/m) and
+          sub-picojoule modulation — once a weight is set via the Pockels effect, the chip
+          holds it capacitively at <strong style="color:var(--text)">near-zero static power</strong>,
+          while GPU DRAM spends 10–100 pJ just to fetch that same weight.
         </p>
         <p style="color:rgba(122,143,168,0.8);font-size:0.88rem;line-height:1.65;">
-          <strong style="color:var(--text)">GHz-speed modulation</strong> — our modulators operate well
-          above 1 GHz, providing the raw clock rate needed to outperform conventional
-          accelerators on real inference workloads. Fast switching means more matrix
-          operations per second from the same silicon area.
+          <strong style="color:var(--text)">Validated by the ZEN-1 prototype:</strong> 33.5 fJ/OP energy efficiency,
+          0.64 TOPS throughput, 98.5% matrix fidelity, and 99% classification accuracy
+          on non-linear datasets — the platform is proven well beyond proof of concept.
         </p>
       </div>
 
@@ -386,7 +401,35 @@
         </p>
       </div>
 
+      <!-- Innovation 4: Modular Tensor Scalability -->
+      <div class="tech-card" style="border-color:rgba(255,160,50,0.22);">
+        <div class="tech-icon" style="background:rgba(255,160,50,0.08);border-color:rgba(255,160,50,0.25);font-size:1.4rem;">⬡</div>
+        <h3>Modular Tensor Scalability</h3>
+        <div style="display:inline-block;background:rgba(255,160,50,0.07);border:1px solid rgba(255,160,50,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:#ffa032;letter-spacing:.05em;font-weight:600;margin-bottom:14px;">Beyond 100 channels</div>
+        <p style="margin-bottom:14px;">
+          Today's most advanced photonic processors top out at around 100 channels —
+          far too few for large-scale AI. Our modular architecture connects multiple
+          loop processors using <strong style="color:var(--text)">tensor decomposition</strong>,
+          scaling compute capacity without redesigning the core chip.
+        </p>
+        <p style="color:rgba(122,143,168,0.8);font-size:0.88rem;line-height:1.65;">
+          Each module remains compact and independently verifiable. Tensor decomposition
+          discovers the optimal wiring between modules automatically, providing a clear
+          path to the channel counts required by transformer and LLM inference.
+        </p>
+      </div>
+
     </div><!-- /tech-grid -->
+
+    <!-- Inverse power scaling callout -->
+    <div style="margin-top:40px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);border-radius:var(--radius);padding:28px 36px;text-align:center;">
+      <p style="font-size:1.02rem;color:var(--text);line-height:1.8;max-width:700px;margin:0 auto;">
+        <strong style="color:var(--accent);">Inverse power scaling law —</strong>
+        unlike GPUs whose energy cost grows quadratically with model size,
+        our TFLN architecture becomes <strong style="color:var(--accent3);">more efficient as the network scales</strong>.
+        The larger the model, the greater our advantage.
+      </p>
+    </div>
 
     <!-- How photonic inference works -->
     <div style="margin-top:72px;">
@@ -448,23 +491,25 @@
         <h2 class="section-title">Building the <span class="highlight">optical computer</span> for AI</h2>
         <p>
           Loop Labs is an early-stage deep-tech company developing integrated
-          photonic chips for AI inference acceleration. We combine expertise in
-          integrated photonics, electro-optic materials, and machine learning
-          systems to build hardware that is fundamentally more efficient than
-          digital silicon for the specific computation pattern AI demands.
+          photonic chips for AI inference acceleration. Our technology was born from a
+          strategic research collaboration between the
+          <strong style="color:var(--text)">Università degli Studi di Milano</strong> and
+          <strong style="color:var(--text)">Politecnico di Milano</strong>, combining deep expertise
+          in integrated photonics, electro-optic materials, and machine learning systems.
         </p>
         <p>
-          Our recirculating loop architecture lets a single compact chip
-          implement arbitrarily deep networks by reusing the same optical mesh
-          on each loop cycle — avoiding the area explosion of unrolled photonic
-          arrays while maintaining sub-nanosecond cycle times.
+          Our ultimate objective is to break the chain that confines advanced AI to
+          multi-megawatt datacenters. By computing with photons instead of electrons,
+          we aim to bring massive generative AI to
+          <strong style="color:var(--text)">edge devices</strong> — autonomous vehicles,
+          robotics, and everyday consumer electronics — making AI ubiquitous, instantaneous,
+          and sustainable.
         </p>
+        <p style="color:var(--muted);font-size:0.85rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;margin-top:24px;">Development roadmap</p>
         <ul class="about-list">
-          <li>Thin-film lithium niobate — the most efficient integrated modulator platform available</li>
-          <li>Physics-grounded digital twin validated against real material constants</li>
-          <li>Full energy model covering every conversion step from weight to output</li>
-          <li>Target: large-scale transformer inference at orders-of-magnitude lower energy</li>
-          <li>Compatible with standard telecom fibre and existing data-centre RF electronics</li>
+          <li><strong style="color:var(--text)">Now:</strong> Feedforward Neural Networks and MLPs — fully validated on standard non-linear datasets</li>
+          <li><strong style="color:var(--text)">Next:</strong> Convolutional Neural Networks and ResNets for computer vision workloads</li>
+          <li><strong style="color:var(--text)">Target:</strong> Large Language Models and Transformers — attention mechanisms mapped natively to optical hardware</li>
         </ul>
       </div>
 
