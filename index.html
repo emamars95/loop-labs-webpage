@@ -201,10 +201,9 @@
 <!-- ── Problem ──────────────────────────────────────────────────────────── -->
 <section id="problem">
   <div class="container">
-    <div class="problem-grid">
-      <div>
-        <span class="eyebrow">The challenge</span>
-        <h2 class="section-title">AI inference is an <span class="highlight">energy crisis</span></h2>
+    <div style="max-width:720px;">
+      <span class="eyebrow">The challenge</span>
+      <h2 class="section-title">AI inference is an <span class="highlight">energy crisis</span></h2>
         <p style="color:var(--muted);margin-bottom:20px;line-height:1.75;">
           Training a large language model emits as much CO₂ as a transatlantic flight.
           But the real scale problem is <strong style="color:var(--text)">inference</strong> — the billions of
@@ -222,7 +221,6 @@
           coherently with <strong style="color:var(--text)">near-zero marginal energy per operation</strong>.
           Once the weights are set, the optical field propagates and computes for free.
         </p>
-      </div>
     </div>
     <div style="margin-top:48px;">
       <img src="ai_energy.png" alt="AI energy consumption growth chart" style="width:100%;border-radius:var(--radius);display:block;" />
@@ -311,11 +309,6 @@
     <p style="text-align:center;font-size:0.78rem;color:var(--muted);margin-top:28px;">
       Figures derived from the Loop Labs physics digital twin. GPU model: NVIDIA A100 FP32, full energy including DRAM fetch, compute, and static power at 400 W TDP.
     </p>
-
-    <!-- comparison.png figure -->
-    <div style="margin-top:56px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--glow);">
-      <img src="comparison.png" alt="Energy and latency comparison chart — Loop Labs photonic chip vs GPU" style="width:100%;height:auto;display:block;" />
-    </div>
   </div>
 </section>
 
