@@ -375,6 +375,21 @@ nav {
   text-align: center;
 }
 
+.problem-image-wrap {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--glow);
+  align-self: center;
+}
+
+.problem-image-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+}
+
 /* ── Technology section ──────────────────────────────────────────────────── */
 #technology { background: var(--bg2); }
 
