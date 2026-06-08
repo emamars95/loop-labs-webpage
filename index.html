@@ -9,6 +9,128 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Comparison section ──────────────────────────────────────── */
+    #comparison {
+      background: var(--bg);
+      padding: 80px 0 100px;
+    }
+    .comparison-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .comparison-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 14px;
+    }
+    .comparison-header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .compare-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 32px 28px;
+    }
+    .compare-card .c-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .compare-card .c-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+    .c-bar-group { display: flex; flex-direction: column; gap: 14px; }
+    .c-row { display: flex; align-items: center; gap: 12px; }
+    .c-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      width: 100px;
+      flex-shrink: 0;
+    }
+    .c-track {
+      flex: 1;
+      height: 32px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .c-fill {
+      height: 100%;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      transition: width 1.6s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .c-fill-gpu     { background: linear-gradient(90deg,#c0392b,#e74c3c); color:#fff; width:0; }
+    .c-fill-photo   { background: linear-gradient(90deg,#00d4ff,#39ff8e); color:#050a12; width:0; }
+    .c-unit { font-size: 0.75rem; color: var(--muted); width: 56px; flex-shrink:0; text-align:right; }
+
+    .compare-advantage {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .adv-pill {
+      background: rgba(0,212,255,0.07);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 100px;
+      padding: 14px 28px;
+      text-align: center;
+    }
+    .adv-pill .adv-num {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .adv-pill .adv-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── How it works mesh image ─────────────────────────────────── */
+    .mesh-img-wrap {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 48px;
+      text-align: center;
+    }
+    .mesh-img-wrap img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .mesh-caption {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 720px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
@@ -19,9 +141,9 @@
     Loop Labs
   </div>
   <ul class="nav-links">
+    <li><a href="#comparison">Performance</a></li>
     <li><a href="#technology">Technology</a></li>
     <li><a href="#how-it-works">How it works</a></li>
-    <li><a href="#performance">Performance</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact" class="nav-cta">Contact us</a></li>
   </ul>
@@ -41,13 +163,13 @@
       </h1>
       <p class="hero-sub fade-up delay-2">
         Loop Labs builds photonic chips in lithium niobate that perform
-        matrix-vector multiplication entirely in the optical domain —
-        delivering sub-nanosecond inference at a fraction of the energy cost
-        of conventional accelerators.
+        AI matrix computations entirely in the optical domain —
+        delivering inference in nanoseconds at a fraction of the energy
+        cost of conventional accelerators.
       </p>
       <div class="hero-actions fade-up delay-3">
-        <a href="#how-it-works" class="btn-primary">See how it works →</a>
-        <a href="#performance" class="btn-outline">Performance data</a>
+        <a href="#comparison" class="btn-primary">See the numbers →</a>
+        <a href="#how-it-works" class="btn-outline">How it works</a>
       </div>
     </div>
   </div>
@@ -67,24 +189,16 @@
           <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
         </radialGradient>
       </defs>
-
-      <!-- Chip background glow -->
       <rect x="60" y="30" width="420" height="400" rx="16" fill="url(#chip-glow)"/>
       <rect x="60" y="30" width="420" height="400" rx="16" fill="rgba(0,212,255,0.03)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
-
-      <!-- Chip label -->
       <text x="270" y="60" text-anchor="middle" fill="rgba(0,212,255,0.5)" font-size="11" font-family="JetBrains Mono,monospace" letter-spacing="2">LiNbO₃ PHOTONIC CHIP</text>
-
-      <!-- Waveguide inputs (left) -->
-      <g id="wg-inputs">
-        <line x1="60" y1="120" x2="160" y2="120" stroke="url(#wg-grad)" stroke-width="2.5"/>
-        <line x1="60" y1="170" x2="160" y2="170" stroke="url(#wg-grad)" stroke-width="2.5"/>
-        <line x1="60" y1="220" x2="160" y2="220" stroke="url(#wg-grad)" stroke-width="2.5"/>
-        <line x1="60" y1="270" x2="160" y2="270" stroke="url(#wg-grad)" stroke-width="2.5"/>
-        <line x1="60" y1="320" x2="160" y2="320" stroke="url(#wg-grad)" stroke-width="2.5"/>
-        <line x1="60" y1="370" x2="160" y2="370" stroke="url(#wg-grad)" stroke-width="2.5"/>
-      </g>
-
+      <!-- Input waveguides -->
+      <line x1="60" y1="120" x2="160" y2="120" stroke="url(#wg-grad)" stroke-width="2.5"/>
+      <line x1="60" y1="170" x2="160" y2="170" stroke="url(#wg-grad)" stroke-width="2.5"/>
+      <line x1="60" y1="220" x2="160" y2="220" stroke="url(#wg-grad)" stroke-width="2.5"/>
+      <line x1="60" y1="270" x2="160" y2="270" stroke="url(#wg-grad)" stroke-width="2.5"/>
+      <line x1="60" y1="320" x2="160" y2="320" stroke="url(#wg-grad)" stroke-width="2.5"/>
+      <line x1="60" y1="370" x2="160" y2="370" stroke="url(#wg-grad)" stroke-width="2.5"/>
       <!-- Input dots -->
       <circle cx="60" cy="120" r="5" fill="#00d4ff" filter="url(#glow)" opacity="0.9"/>
       <circle cx="60" cy="170" r="4" fill="#00d4ff" opacity="0.5"/>
@@ -92,53 +206,40 @@
       <circle cx="60" cy="270" r="4" fill="#00d4ff" opacity="0.4"/>
       <circle cx="60" cy="320" r="5" fill="#00d4ff" filter="url(#glow)" opacity="0.7"/>
       <circle cx="60" cy="370" r="4" fill="#00d4ff" opacity="0.3"/>
-
-      <!-- Column 1: MZM blocks even pairs -->
-      <!-- MZM (0,1) -->
+      <!-- Col-0 MZMs -->
       <rect x="160" y="100" width="80" height="90" rx="6" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.35)" stroke-width="1.5"/>
       <text x="200" y="141" text-anchor="middle" fill="rgba(0,212,255,0.6)" font-size="9" font-family="JetBrains Mono,monospace">MZM</text>
       <text x="200" y="154" text-anchor="middle" fill="rgba(0,212,255,0.4)" font-size="8" font-family="JetBrains Mono,monospace">0,1</text>
-      <!-- coupling lines inside MZM -->
       <path d="M160,120 Q200,145 240,170" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" fill="none"/>
       <path d="M160,170 Q200,145 240,120" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" fill="none"/>
-
-      <!-- MZM (2,3) -->
       <rect x="160" y="200" width="80" height="90" rx="6" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.35)" stroke-width="1.5"/>
       <text x="200" y="241" text-anchor="middle" fill="rgba(0,212,255,0.6)" font-size="9" font-family="JetBrains Mono,monospace">MZM</text>
       <text x="200" y="254" text-anchor="middle" fill="rgba(0,212,255,0.4)" font-size="8" font-family="JetBrains Mono,monospace">2,3</text>
       <path d="M160,220 Q200,245 240,270" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" fill="none"/>
       <path d="M160,270 Q200,245 240,220" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" fill="none"/>
-
-      <!-- MZM (4,5) -->
       <rect x="160" y="300" width="80" height="90" rx="6" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.35)" stroke-width="1.5"/>
       <text x="200" y="341" text-anchor="middle" fill="rgba(0,212,255,0.6)" font-size="9" font-family="JetBrains Mono,monospace">MZM</text>
       <text x="200" y="354" text-anchor="middle" fill="rgba(0,212,255,0.4)" font-size="8" font-family="JetBrains Mono,monospace">4,5</text>
       <path d="M160,320 Q200,345 240,370" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" fill="none"/>
       <path d="M160,370 Q200,345 240,320" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" fill="none"/>
-
-      <!-- Inter-column waveguides -->
+      <!-- Inter-column -->
       <line x1="240" y1="120" x2="300" y2="120" stroke="rgba(0,212,255,0.25)" stroke-width="2"/>
       <line x1="240" y1="170" x2="300" y2="170" stroke="rgba(0,212,255,0.25)" stroke-width="2"/>
       <line x1="240" y1="220" x2="300" y2="220" stroke="rgba(0,212,255,0.25)" stroke-width="2"/>
       <line x1="240" y1="270" x2="300" y2="270" stroke="rgba(0,212,255,0.25)" stroke-width="2"/>
       <line x1="240" y1="320" x2="300" y2="320" stroke="rgba(0,212,255,0.25)" stroke-width="2"/>
       <line x1="240" y1="370" x2="300" y2="370" stroke="rgba(0,212,255,0.25)" stroke-width="2"/>
-
-      <!-- Column 2: MZM blocks odd pairs -->
-      <!-- MZM (1,2) -->
+      <!-- Col-1 MZMs -->
       <rect x="300" y="150" width="80" height="90" rx="6" fill="rgba(123,92,250,0.08)" stroke="rgba(123,92,250,0.4)" stroke-width="1.5"/>
       <text x="340" y="191" text-anchor="middle" fill="rgba(123,92,250,0.7)" font-size="9" font-family="JetBrains Mono,monospace">MZM</text>
       <text x="340" y="204" text-anchor="middle" fill="rgba(123,92,250,0.5)" font-size="8" font-family="JetBrains Mono,monospace">1,2</text>
       <path d="M300,170 Q340,195 380,220" stroke="rgba(123,92,250,0.5)" stroke-width="1.5" fill="none"/>
       <path d="M300,220 Q340,195 380,170" stroke="rgba(123,92,250,0.5)" stroke-width="1.5" fill="none"/>
-
-      <!-- MZM (3,4) -->
       <rect x="300" y="250" width="80" height="90" rx="6" fill="rgba(123,92,250,0.08)" stroke="rgba(123,92,250,0.4)" stroke-width="1.5"/>
       <text x="340" y="291" text-anchor="middle" fill="rgba(123,92,250,0.7)" font-size="9" font-family="JetBrains Mono,monospace">MZM</text>
       <text x="340" y="304" text-anchor="middle" fill="rgba(123,92,250,0.5)" font-size="8" font-family="JetBrains Mono,monospace">3,4</text>
       <path d="M300,270 Q340,295 380,320" stroke="rgba(123,92,250,0.5)" stroke-width="1.5" fill="none"/>
       <path d="M300,320 Q340,295 380,270" stroke="rgba(123,92,250,0.5)" stroke-width="1.5" fill="none"/>
-
       <!-- Output waveguides -->
       <line x1="380" y1="120" x2="480" y2="120" stroke="rgba(57,255,142,0.4)" stroke-width="2.5"/>
       <line x1="380" y1="170" x2="480" y2="170" stroke="rgba(57,255,142,0.4)" stroke-width="2.5"/>
@@ -146,31 +247,27 @@
       <line x1="380" y1="270" x2="480" y2="270" stroke="rgba(57,255,142,0.4)" stroke-width="2.5"/>
       <line x1="380" y1="320" x2="480" y2="320" stroke="rgba(57,255,142,0.4)" stroke-width="2.5"/>
       <line x1="380" y1="370" x2="480" y2="370" stroke="rgba(57,255,142,0.4)" stroke-width="2.5"/>
-
-      <!-- Output dots -->
       <circle cx="480" cy="120" r="5" fill="#39ff8e" filter="url(#glow)" opacity="0.7"/>
       <circle cx="480" cy="170" r="4" fill="#39ff8e" opacity="0.5"/>
       <circle cx="480" cy="220" r="5" fill="#39ff8e" filter="url(#glow)" opacity="0.8"/>
       <circle cx="480" cy="270" r="4" fill="#39ff8e" opacity="0.4"/>
       <circle cx="480" cy="320" r="5" fill="#39ff8e" filter="url(#glow)" opacity="0.6"/>
       <circle cx="480" cy="370" r="4" fill="#39ff8e" opacity="0.3"/>
-
-      <!-- Loop arrow (recirculation) -->
+      <!-- Loop arc -->
       <path d="M 480,245 C 520,245 530,40 270,40 C 10,40 10,430 270,430 C 530,430 520,365 480,345"
             fill="none" stroke="rgba(0,212,255,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
       <polygon points="480,245 472,238 472,252" fill="rgba(0,212,255,0.4)"/>
       <text x="275" y="425" text-anchor="middle" fill="rgba(0,212,255,0.35)" font-size="10" font-family="JetBrains Mono,monospace">recirculating loop</text>
-
-      <!-- Animated photon particles -->
-      <circle class="photon" id="p1" cx="0" cy="0" r="3">
+      <!-- Photon animations -->
+      <circle r="3" fill="#00d4ff" style="filter:drop-shadow(0 0 4px #00d4ff)">
         <animateMotion dur="3s" repeatCount="indefinite" begin="0s"
           path="M60,120 L160,120 Q200,145 240,170 L300,170 Q340,195 380,220 L480,220"/>
       </circle>
-      <circle class="photon" id="p2" cx="0" cy="0" r="3" fill="#39ff8e" style="filter:drop-shadow(0 0 4px #39ff8e)">
+      <circle r="3" fill="#39ff8e" style="filter:drop-shadow(0 0 4px #39ff8e)">
         <animateMotion dur="3s" repeatCount="indefinite" begin="1s"
           path="M60,220 L160,220 Q200,245 240,270 L300,270 Q340,295 380,320 L480,320"/>
       </circle>
-      <circle class="photon" id="p3" cx="0" cy="0" r="2.5" fill="#7b5cfa" style="filter:drop-shadow(0 0 4px #7b5cfa)">
+      <circle r="2.5" fill="#7b5cfa" style="filter:drop-shadow(0 0 4px #7b5cfa)">
         <animateMotion dur="3s" repeatCount="indefinite" begin="2s"
           path="M60,320 L160,320 Q200,345 240,370 L300,370 L480,370"/>
       </circle>
@@ -178,24 +275,108 @@
   </div>
 </section>
 
-<!-- ── Stats Bar ────────────────────────────────────────────────────────── -->
+<!-- ── Comparison — right after hero ───────────────────────────────────── -->
+<section id="comparison">
+  <div class="container">
+    <div class="comparison-header">
+      <span class="eyebrow">Benchmarked against the best</span>
+      <h2>Faster. <span class="highlight">Far more efficient.</span></h2>
+      <p>
+        Our physics engine computes inference time and energy for the same
+        workload on a photonic chip and on an NVIDIA A100 GPU — from first principles.
+      </p>
+    </div>
+
+    <div class="compare-grid">
+      <!-- Time -->
+      <div class="compare-card" id="time-card">
+        <div class="c-label">Inference time</div>
+        <div class="c-title">How long one inference takes</div>
+        <div class="c-bar-group">
+          <div class="c-row">
+            <div class="c-name" style="color:#e74c3c;">A100 GPU</div>
+            <div class="c-track">
+              <div class="c-fill c-fill-gpu" id="t-gpu" data-w="100">45.4 ns</div>
+            </div>
+            <div class="c-unit">45.4 ns</div>
+          </div>
+          <div class="c-row">
+            <div class="c-name" style="color:#00d4ff;">Loop Labs</div>
+            <div class="c-track">
+              <div class="c-fill c-fill-photo" id="t-photo" data-w="15.8">7.2 ns</div>
+            </div>
+            <div class="c-unit" style="color:var(--accent3);font-weight:700;">7.2 ns</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Energy -->
+      <div class="compare-card" id="energy-card">
+        <div class="c-label">Inference energy</div>
+        <div class="c-title">Energy consumed per inference</div>
+        <div class="c-bar-group">
+          <div class="c-row">
+            <div class="c-name" style="color:#e74c3c;">A100 GPU</div>
+            <div class="c-track">
+              <div class="c-fill c-fill-gpu" id="e-gpu" data-w="100">2 980 nJ</div>
+            </div>
+            <div class="c-unit">2 980 nJ</div>
+          </div>
+          <div class="c-row">
+            <div class="c-name" style="color:#00d4ff;">Loop Labs</div>
+            <div class="c-track">
+              <div class="c-fill c-fill-photo" id="e-photo" data-w="0.74">22 nJ</div>
+            </div>
+            <div class="c-unit" style="color:var(--accent3);font-weight:700;">22 nJ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advantage pills -->
+    <div class="compare-advantage">
+      <div class="adv-pill">
+        <div class="adv-num highlight">6×</div>
+        <div class="adv-desc">faster inference</div>
+      </div>
+      <div class="adv-pill">
+        <div class="adv-num highlight3">135×</div>
+        <div class="adv-desc">lower energy</div>
+      </div>
+      <div class="adv-pill">
+        <div class="adv-num" style="color:#fff;">7.2 ns</div>
+        <div class="adv-desc">total inference time</div>
+      </div>
+      <div class="adv-pill">
+        <div class="adv-num highlight2">225 ps</div>
+        <div class="adv-desc">per computation layer</div>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:0.78rem;color:var(--muted);margin-top:28px;">
+      Figures derived from the Loop Labs physics digital twin. GPU model: NVIDIA A100 FP32, full energy including DRAM fetch, compute, and static power at 400 W TDP.
+    </p>
+  </div>
+</section>
+
+<!-- ── Stats bar ────────────────────────────────────────────────────────── -->
 <div id="stats-bar">
   <div class="stats-bar-inner">
     <div class="stat-item">
-      <div class="stat-number highlight">~500×</div>
-      <div class="stat-desc">lower energy vs. A100 GPU per inference</div>
+      <div class="stat-number highlight">135×</div>
+      <div class="stat-desc">lower energy than an A100 GPU</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number highlight2">225 ps</div>
-      <div class="stat-desc">loop cycle time at 3 cm path length</div>
+      <div class="stat-number highlight2">6×</div>
+      <div class="stat-desc">faster inference than A100 GPU</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number highlight3">1550 nm</div>
-      <div class="stat-desc">telecom-band operation, CMOS-compatible</div>
+      <div class="stat-number highlight3">7.2 ns</div>
+      <div class="stat-desc">total inference time</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number" style="color:#fff">≈4 V</div>
-      <div class="stat-desc">half-wave voltage V<sub>π</sub> — 5 mm electrode</div>
+      <div class="stat-number" style="color:#fff;">225 ps</div>
+      <div class="stat-desc">per computation layer</div>
     </div>
   </div>
 </div>
@@ -214,41 +395,37 @@
           hundreds of watts continuously.
         </p>
         <p style="color:var(--muted);margin-bottom:20px;line-height:1.75;">
-          The dominant operation in neural networks is the
-          <strong style="color:var(--text)">matrix-vector multiplication (MVM)</strong> — multiply an input
-          vector by a weight matrix to produce the next activation. On silicon
-          transistors this means fetching terabytes of weight data from DRAM and
-          toggling billions of transistors every second. Physics sets a floor on how
-          efficiently electrons can do this.
+          The dominant operation in neural networks is multiplying an input
+          vector by a weight matrix. On silicon transistors this means fetching
+          gigabytes of weight data and toggling billions of transistors every second.
+          Physics sets a hard floor on how efficiently electrons can do this.
         </p>
         <p style="color:var(--muted);line-height:1.75;">
-          Photons do not have that floor. Light can encode, route, and interfere
+          Photons do not have that floor. Light encodes, routes, and multiplies
           coherently with <strong style="color:var(--text)">near-zero marginal energy per operation</strong>.
-          The modulator electrode charges to set a weight <em>once</em>; after that the
-          optical field propagates and multiplies for free.
+          Once the weights are set, the optical field propagates and computes for free.
         </p>
       </div>
       <div class="problem-chart">
-        <div class="eyebrow" style="margin-bottom:20px;">Energy per MVM (8-dim, pJ)</div>
+        <div class="eyebrow" style="margin-bottom:20px;">Energy per inference — GPU vs photonic (nJ)</div>
         <div class="bar-chart" id="bar-chart">
           <div class="bar-row">
             <div class="bar-label">A100 GPU</div>
             <div class="bar-track">
-              <div class="bar-fill bar-gpu" data-target="100" style="width:100%">344 442 pJ</div>
+              <div class="bar-fill bar-gpu" style="width:100%">2 980 nJ</div>
             </div>
           </div>
           <div class="bar-row" style="margin-top:12px">
             <div class="bar-label">Loop Labs</div>
             <div class="bar-track">
-              <div class="bar-fill bar-photo" id="photo-bar" data-target="0.19" style="width:0%">
-              </div>
+              <div class="bar-fill bar-photo" id="photo-bar" style="width:0%"></div>
             </div>
-            <div class="bar-value" style="color:var(--accent3);font-weight:700;font-size:0.8rem;">~656 pJ</div>
+            <div class="bar-value" style="color:var(--accent3);font-weight:700;font-size:0.8rem;">22 nJ</div>
           </div>
         </div>
         <p class="chart-caption">
-          Modeled from physics engine digital twin. GPU: A100 FP32, N=8 MVM.<br/>
-          Photonic: capacitive + DAC + ADC + amplifier + laser, all cycles.
+          Modeled from Loop Labs physics engine. Full circuit energy accounting:<br/>
+          capacitive switching, conversion, amplification, and laser supply.
         </p>
       </div>
     </div>
@@ -262,8 +439,8 @@
     <h2 class="section-title">Built on thin-film <span class="highlight">LiNbO₃</span></h2>
     <p class="section-sub">
       Lithium niobate is the ideal platform for high-speed electro-optic
-      modulation — combining the lowest V<sub>π</sub> of any integrated material
-      with low propagation loss and telecom compatibility.
+      modulation — combining ultra-low drive voltages, minimal optical loss,
+      and full compatibility with telecom infrastructure at 1550 nm.
     </p>
 
     <div class="tech-grid">
@@ -271,60 +448,59 @@
         <div class="tech-icon">⚡</div>
         <h3>Pockels Effect Modulation</h3>
         <p>
-          LiNbO₃ changes its refractive index linearly with applied field
-          (Pockels effect, r₃₃ = 30 pm/V). A 5 mm thin-film ridge electrode
-          achieves V<sub>π</sub> ≈ 4 V — enabling high-speed, low-energy weight
-          programming with a standard 50 Ω RF driver.
+          Lithium niobate shifts its refractive index in direct proportion to
+          an applied electric field — the Pockels effect. Thin-film ridge
+          waveguides concentrate the field tightly, allowing weight updates
+          with low drive voltages and minimal energy per switch.
         </p>
       </div>
       <div class="tech-card">
         <div class="tech-icon">🔀</div>
-        <h3>MZM Brick-Wall Mesh</h3>
+        <h3>Optical Weight Matrix</h3>
         <p>
-          Mach-Zehnder Modulators are arranged in a brick-wall alternating-offset
-          mesh. Even columns couple waveguide pairs (0,1),(2,3)… odd columns couple
-          (1,2),(3,4)… This topology implements arbitrary unitary matrices
-          (Clements decomposition) in O(N) depth.
+          Mach-Zehnder Modulators arranged in a staggered mesh implement
+          the weight matrix directly in the optical domain. Each modulator
+          routes light between waveguides according to its programmed voltage —
+          the matrix multiply happens as photons propagate.
         </p>
       </div>
       <div class="tech-card">
         <div class="tech-icon">🔁</div>
         <h3>Recirculating Loop</h3>
         <p>
-          Rather than unrolling each network layer into a long chip, the optical
-          field is fed back into the same MZM mesh on every loop cycle. A 3 cm
-          loop gives a 225 ps cycle time — the same hardware computes multiple
-          VMMs in sequence at picosecond cadence.
+          Instead of a long linear chip, the optical field loops back through
+          the same modulator mesh on every cycle. Each 225 ps pass implements
+          one stage of the computation — the same hardware scales to deep
+          networks without growing the die area.
         </p>
       </div>
       <div class="tech-card">
         <div class="tech-icon">🌊</div>
-        <h3>Coherent Optical Field</h3>
+        <h3>Coherent Optics</h3>
         <p>
-          Computation is carried by the complex amplitude of light at 1550 nm.
-          The beam splitter and phase shift in each MZM implement the 2×2 unitary
-          rotation exactly — no quantisation noise, no thermal drift from transistor
-          switching.
+          Computation is encoded in the complex amplitude of a 1550 nm laser.
+          The interference inside each modulator implements the matrix rotation
+          exactly — no thermal drift from transistor switching, no quantisation
+          noise from digital arithmetic.
         </p>
       </div>
       <div class="tech-card">
         <div class="tech-icon">📐</div>
-        <h3>Compact Footprint</h3>
+        <h3>Compact Die</h3>
         <p>
-          A reference 32-MZM chip fits on a 2 cm × 1.5 cm die using standard
-          thin-film LiNbO₃ wafer process. The electrode gap is 3 µm — tight enough
-          for mode-overlap factor Γ = 0.7 and low V<sub>π</sub>, yet manufacturable
-          with current e-beam lithography.
+          Dozens of modulators fit on a chip smaller than a fingernail using
+          a standard thin-film LiNbO₃ wafer process. The technology scales
+          to larger networks by increasing waveguide count, not chip area.
         </p>
       </div>
       <div class="tech-card">
         <div class="tech-icon">📊</div>
-        <h3>Full Energy Model</h3>
+        <h3>Full Energy Accounting</h3>
         <p>
-          Our digital twin tracks every joule: incremental capacitive switching,
-          DAC/ADC conversion, optical amplifier gain, laser supply, and ASE noise.
-          All validated against a physics engine with calibrated LiNbO₃ material
-          constants at 1550 nm.
+          Our digital twin tracks every joule: weight programming, signal
+          conversion, optical amplification, and laser supply — all cross-validated
+          against calibrated material constants and compared against real
+          GPU hardware specifications.
         </p>
       </div>
     </div>
@@ -335,10 +511,10 @@
 <section id="how-it-works">
   <div class="container">
     <span class="eyebrow">Operation</span>
-    <h2 class="section-title">How a photonic <span class="highlight2">MVM</span> works</h2>
+    <h2 class="section-title">How photonic inference <span class="highlight2">works</span></h2>
     <p class="section-sub">
-      One matrix-vector multiplication in the optical domain, from input laser
-      to digital output — in under a nanosecond.
+      One inference pass — from encoded input to digital output — in under
+      ten nanoseconds.
     </p>
 
     <div class="steps">
@@ -346,62 +522,47 @@
         <div class="step-number">🔦</div>
         <h3>1 · Encode input</h3>
         <p>
-          The input vector is encoded as complex optical amplitudes on N
-          waveguides using on-chip modulators or external sources at 1550 nm.
+          The neural network input is encoded as the intensity and phase of
+          light on a set of parallel waveguides using on-chip modulators at 1550 nm.
         </p>
       </div>
       <div class="step">
         <div class="step-number">🔀</div>
-        <h3>2 · Propagate through mesh</h3>
+        <h3>2 · Optical multiply</h3>
         <p>
-          The optical field passes through the MZM brick-wall mesh. Each MZM
-          applies a 2×2 unitary rotation set by the weight voltage V, coupling
-          power between adjacent waveguides.
+          Light propagates through the modulator mesh. Each element couples
+          power between adjacent waveguides according to its programmed weight —
+          implementing one matrix stage in a single pass.
         </p>
       </div>
       <div class="step">
         <div class="step-number">🔁</div>
         <h3>3 · Recirculate</h3>
         <p>
-          The output field is coupled back to the chip input via a short
-          waveguide loop. Each pass through the mesh implements one set of
-          columns — multiple passes realise a deeper transformation.
+          The output field is fed back into the chip input via a short loop.
+          Repeating the pass through the same mesh — with updated weights —
+          implements a deeper transformation without a longer chip.
         </p>
       </div>
       <div class="step">
         <div class="step-number">📡</div>
         <h3>4 · Detect &amp; read out</h3>
         <p>
-          Photodetectors measure the intensity at each output waveguide and
-          ADCs convert to digital — delivering the matrix-vector product result
-          in one loop cycle (≈ 225 ps for a 3 cm path).
+          Photodetectors measure the light intensity at each output waveguide.
+          Converters digitise the result and hand it to the next network layer —
+          all within a handful of nanoseconds.
         </p>
       </div>
     </div>
 
-    <!-- Chip diagram inline -->
-    <div style="margin-top:60px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:36px;overflow:auto;">
-      <p class="eyebrow" style="text-align:center;margin-bottom:24px;">Brick-wall MZM mesh topology (8 inputs, 2 columns)</p>
-      <pre style="color:rgba(0,212,255,0.7);font-family:var(--font-mono);font-size:0.82rem;line-height:1.8;text-align:center;overflow:auto;">
-        Col 0              Col 1
-⊙ a₀ ──[MZM(0,1)]────────────────── ⊙
-        ╲           ╱
-⊙ a₁ ──[MZM(0,1)]──[MZM(1,2)]────── ⊙
-                    ╲            ╱
-⊙ a₂ ──[MZM(2,3)]──[MZM(1,2)]────── ⊙
-        ╲           ╱
-⊙ a₃ ──[MZM(2,3)]──[MZM(3,4)]────── ⊙
-                    ╲            ╱
-⊙ a₄ ──[MZM(4,5)]──[MZM(3,4)]────── ⊙
-        ╲           ╱
-⊙ a₅ ──[MZM(4,5)]──[MZM(5,6)]────── ⊙
-                    ╲            ╱
-⊙ a₆ ──[MZM(6,7)]──[MZM(5,6)]────── ⊙
-        ╲           ╱
-⊙ a₇ ──[MZM(6,7)]─────────────────── ⊙</pre>
-      <p style="text-align:center;color:var(--muted);font-size:0.8rem;margin-top:16px;">
-        Even columns couple (0,1),(2,3),… · Odd columns couple (1,2),(3,4),…
-        · 7 active MZMs per cycle in default configuration
+    <!-- Chip mesh diagram -->
+    <div class="mesh-img-wrap">
+      <p class="eyebrow" style="margin-bottom:16px;">Modulator mesh — optical coupling topology</p>
+      <img src="chip_mesh.svg" alt="Brick-wall MZM mesh showing two columns of optical modulators coupling adjacent waveguides in a staggered pattern" />
+      <p class="mesh-caption">
+        Each rectangle is a Mach-Zehnder Modulator coupling two adjacent waveguides.
+        Even columns (blue) and odd columns (purple) alternate to implement a full matrix transformation
+        across multiple loop cycles. The dashed border shows the recirculating path.
       </p>
     </div>
   </div>
@@ -411,10 +572,10 @@
 <section id="performance">
   <div class="container">
     <span class="eyebrow">Performance</span>
-    <h2 class="section-title">Benchmarks vs. digital <span class="highlight3">accelerators</span></h2>
+    <h2 class="section-title">Head-to-head vs. <span class="highlight3">A100 GPU</span></h2>
     <p class="section-sub">
-      Modeled on our physics digital twin — all figures derived from calibrated
-      LiNbO₃ material constants and real circuit-level energy accounting.
+      All figures are derived from our physics digital twin and compared against
+      the NVIDIA A100 — a state-of-the-art data-centre GPU.
     </p>
 
     <div class="perf-grid">
@@ -425,59 +586,43 @@
               <tr>
                 <th>Processor</th>
                 <th>Type</th>
-                <th>Energy (pJ)</th>
+                <th>Energy</th>
                 <th>Latency</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Loop Labs</td>
+                <td><strong>Loop Labs</strong></td>
                 <td><span class="tag-photonic">Photonic</span></td>
-                <td class="winner">~656</td>
-                <td class="winner">0.23 ns</td>
+                <td class="winner">22 nJ</td>
+                <td class="winner">7.2 ns</td>
               </tr>
               <tr>
-                <td>A100 FP32</td>
+                <td>NVIDIA A100</td>
                 <td><span class="tag-digital">GPU</span></td>
-                <td class="loser">344 442</td>
-                <td class="loser">5.67 ns</td>
+                <td class="loser">2 980 nJ</td>
+                <td class="loser">45 ns</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p style="font-size:0.78rem;color:var(--muted);margin-top:14px;line-height:1.6;">
-          8-dimensional matrix-vector multiplication (N=8). Photonic total over 4 loop cycles.
-          GPU model: A100 FP32 with DRAM fetch, SRAM, compute, and static power at 400 W.
-          All figures are model-derived from the Loop Labs physics engine.
+          Same inference workload on both platforms, modeled from first principles.
+          GPU figure includes DRAM memory access, SRAM, compute energy, and idle
+          power draw over the inference duration. Photonic figure includes weight
+          programming, signal conversion, and laser supply.
         </p>
 
-        <div style="margin-top:32px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:24px;">
-          <div class="eyebrow" style="margin-bottom:16px;">Energy breakdown (Loop Labs, per cycle)</div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-              <span style="color:var(--muted);">Capacitive switching</span>
-              <span style="font-family:var(--font-mono);">0.25 pJ</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-              <span style="color:var(--muted);">DAC conversion (7 MZMs)</span>
-              <span style="font-family:var(--font-mono);">35 pJ</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-              <span style="color:var(--muted);">ADC readout (8 channels)</span>
-              <span style="font-family:var(--font-mono);">40 pJ</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-              <span style="color:var(--muted);">Optical amplifier</span>
-              <span style="font-family:var(--font-mono);">~0 pJ</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-              <span style="color:var(--muted);">Laser supply</span>
-              <span style="font-family:var(--font-mono);">~89 pJ</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding-top:10px;border-top:1px solid var(--border);">
-              <span style="color:var(--text);font-weight:700;">Total / cycle</span>
-              <span style="font-family:var(--font-mono);color:var(--accent3);font-weight:700;">~164 pJ</span>
-            </div>
+        <div style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Energy saved per inference</div>
+            <div style="font-size:1.8rem;font-weight:800;color:var(--accent3);">2 958 nJ</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">that's 99.3% less</div>
+          </div>
+          <div style="flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Time saved per inference</div>
+            <div style="font-size:1.8rem;font-weight:800;color:var(--accent);">38 ns</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">84% faster end-to-end</div>
           </div>
         </div>
       </div>
@@ -485,28 +630,23 @@
       <div class="perf-metrics">
         <div class="metric-card">
           <div class="metric-label">Energy advantage</div>
-          <div class="metric-value highlight">~525×</div>
-          <div class="metric-note">lower total energy vs. A100 FP32 per N=8 MVM</div>
+          <div class="metric-value highlight">135×</div>
+          <div class="metric-note">lower total energy vs. A100 FP32</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Latency advantage</div>
-          <div class="metric-value highlight2">25×</div>
-          <div class="metric-note">faster inference — 0.23 ns vs 5.67 ns</div>
+          <div class="metric-label">Speed advantage</div>
+          <div class="metric-value highlight2">6×</div>
+          <div class="metric-note">faster inference — 7.2 ns vs 45 ns</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Loop cycle time</div>
-          <div class="metric-value" style="color:#fff;">225 ps</div>
-          <div class="metric-note">3 cm path, n_g = 2.25 group index of LiNbO₃</div>
+          <div class="metric-label">Photonic inference time</div>
+          <div class="metric-value" style="color:#fff;">7.2 ns</div>
+          <div class="metric-note">32 loop cycles × 225 ps per cycle</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Half-wave voltage V<sub>π</sub></div>
-          <div class="metric-value highlight3">≈ 4.1 V</div>
-          <div class="metric-note">5 mm electrode, 3 µm gap, Γ = 0.7 — calibrated</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">MZM loss per element</div>
-          <div class="metric-value" style="color:#fff;">2.45 dB</div>
-          <div class="metric-note">WG + 2×MMI coupler + insertion + bends at L = 5 mm</div>
+          <div class="metric-label">Photonic inference energy</div>
+          <div class="metric-value highlight3">22 nJ</div>
+          <div class="metric-note">complete circuit budget, all sources</div>
         </div>
       </div>
     </div>
@@ -534,63 +674,54 @@
           arrays while maintaining sub-nanosecond cycle times.
         </p>
         <ul class="about-list">
-          <li>Thin-film LiNbO₃ on insulator — lowest V<sub>π</sub> of any integrated modulator platform</li>
-          <li>Physics-grounded digital twin for design-space exploration before tape-out</li>
-          <li>Full energy model accounting for DAC, ADC, laser, amplifier, and capacitive switching</li>
-          <li>Target: large-scale transformer inference with orders-of-magnitude energy reduction</li>
-          <li>Compatibility with standard telecom fibre and 50 Ω RF electronics</li>
+          <li>Thin-film lithium niobate — the most efficient integrated modulator platform available</li>
+          <li>Physics-grounded digital twin validated against real material constants</li>
+          <li>Full energy model covering every conversion step from weight to output</li>
+          <li>Target: large-scale transformer inference at orders-of-magnitude lower energy</li>
+          <li>Compatible with standard telecom fibre and existing data-centre RF electronics</li>
         </ul>
       </div>
 
       <div class="about-chip">
         <div class="chip-diagram">
           <p class="eyebrow" style="margin-bottom:20px;">Technology stack</p>
-          <svg viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" style="max-width:300px;margin:0 auto;">
-            <!-- Layer stack diagram -->
+          <svg viewBox="0 0 320 340" xmlns="http://www.w3.org/2000/svg" style="max-width:300px;margin:0 auto;">
             <defs>
               <linearGradient id="layer-grad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.15"/>
                 <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.03"/>
               </linearGradient>
             </defs>
+            <rect x="20" y="14" width="280" height="52" rx="6" fill="rgba(57,255,142,0.1)" stroke="rgba(57,255,142,0.3)" stroke-width="1.5"/>
+            <text x="160" y="36" text-anchor="middle" fill="#39ff8e" font-size="12" font-family="Inter,sans-serif" font-weight="600">AI Inference Application</text>
+            <text x="160" y="52" text-anchor="middle" fill="rgba(57,255,142,0.55)" font-size="10" font-family="JetBrains Mono,monospace">transformer · MLP · CNN</text>
 
-            <!-- Application layer -->
-            <rect x="20" y="20" width="280" height="52" rx="6" fill="rgba(57,255,142,0.1)" stroke="rgba(57,255,142,0.3)" stroke-width="1.5"/>
-            <text x="160" y="42" text-anchor="middle" fill="#39ff8e" font-size="12" font-family="Inter,sans-serif" font-weight="600">AI Inference Application</text>
-            <text x="160" y="58" text-anchor="middle" fill="rgba(57,255,142,0.55)" font-size="10" font-family="JetBrains Mono,monospace">transformer · MLP · CNN</text>
+            <line x1="160" y1="66" x2="160" y2="82" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
+            <polygon points="160,85 155,77 165,77" fill="rgba(0,212,255,0.4)"/>
 
-            <!-- Arrow -->
-            <line x1="160" y1="72" x2="160" y2="90" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
-            <polygon points="160,93 155,85 165,85" fill="rgba(0,212,255,0.4)"/>
+            <rect x="20" y="85" width="280" height="52" rx="6" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
+            <text x="160" y="107" text-anchor="middle" fill="#00d4ff" font-size="12" font-family="Inter,sans-serif" font-weight="600">Optical Inference Engine</text>
+            <text x="160" y="123" text-anchor="middle" fill="rgba(0,212,255,0.55)" font-size="10" font-family="JetBrains Mono,monospace">recirculating loop · matrix multiply</text>
 
-            <!-- VMM layer -->
-            <rect x="20" y="93" width="280" height="52" rx="6" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
-            <text x="160" y="115" text-anchor="middle" fill="#00d4ff" font-size="12" font-family="Inter,sans-serif" font-weight="600">Optical VMM Engine</text>
-            <text x="160" y="131" text-anchor="middle" fill="rgba(0,212,255,0.55)" font-size="10" font-family="JetBrains Mono,monospace">recirculating loop · N×N unitary</text>
+            <line x1="160" y1="137" x2="160" y2="153" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
+            <polygon points="160,156 155,148 165,148" fill="rgba(0,212,255,0.4)"/>
 
-            <line x1="160" y1="145" x2="160" y2="163" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
-            <polygon points="160,166 155,158 165,158" fill="rgba(0,212,255,0.4)"/>
+            <rect x="20" y="156" width="280" height="52" rx="6" fill="rgba(123,92,250,0.1)" stroke="rgba(123,92,250,0.35)" stroke-width="1.5"/>
+            <text x="160" y="178" text-anchor="middle" fill="#7b5cfa" font-size="12" font-family="Inter,sans-serif" font-weight="600">Modulator Mesh</text>
+            <text x="160" y="194" text-anchor="middle" fill="rgba(123,92,250,0.6)" font-size="10" font-family="JetBrains Mono,monospace">staggered MZM columns</text>
 
-            <!-- MZM mesh layer -->
-            <rect x="20" y="166" width="280" height="52" rx="6" fill="rgba(123,92,250,0.1)" stroke="rgba(123,92,250,0.35)" stroke-width="1.5"/>
-            <text x="160" y="188" text-anchor="middle" fill="#7b5cfa" font-size="12" font-family="Inter,sans-serif" font-weight="600">MZM Brick-Wall Mesh</text>
-            <text x="160" y="204" text-anchor="middle" fill="rgba(123,92,250,0.6)" font-size="10" font-family="JetBrains Mono,monospace">8 waveguides · 2 columns · 7 MZMs</text>
+            <line x1="160" y1="208" x2="160" y2="224" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
+            <polygon points="160,227 155,219 165,219" fill="rgba(0,212,255,0.4)"/>
 
-            <line x1="160" y1="218" x2="160" y2="236" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
-            <polygon points="160,239 155,231 165,231" fill="rgba(0,212,255,0.4)"/>
+            <rect x="20" y="227" width="280" height="52" rx="6" fill="url(#layer-grad)" stroke="rgba(0,212,255,0.25)" stroke-width="1.5"/>
+            <text x="160" y="249" text-anchor="middle" fill="#e4eaf4" font-size="12" font-family="Inter,sans-serif" font-weight="600">Thin-film LiNbO₃</text>
+            <text x="160" y="265" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="JetBrains Mono,monospace">1550 nm · Pockels effect · low loss</text>
 
-            <!-- Photonic platform -->
-            <rect x="20" y="239" width="280" height="52" rx="6" fill="url(#layer-grad)" stroke="rgba(0,212,255,0.25)" stroke-width="1.5"/>
-            <text x="160" y="261" text-anchor="middle" fill="#e4eaf4" font-size="12" font-family="Inter,sans-serif" font-weight="600">Thin-film LiNbO₃ Platform</text>
-            <text x="160" y="277" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="JetBrains Mono,monospace">1550 nm · Vπ ≈ 4 V · r₃₃ = 30 pm/V</text>
+            <line x1="160" y1="279" x2="160" y2="295" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
+            <polygon points="160,298 155,290 165,290" fill="rgba(0,212,255,0.4)"/>
 
-            <line x1="160" y1="291" x2="160" y2="309" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
-            <polygon points="160,312 155,304 165,304" fill="rgba(0,212,255,0.4)"/>
-
-            <!-- Substrate -->
-            <rect x="20" y="312" width="280" height="48" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
-            <text x="160" y="334" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Inter,sans-serif" font-weight="600">SiO₂ / Si Substrate</text>
-            <text x="160" y="350" text-anchor="middle" fill="rgba(122,143,168,0.5)" font-size="10" font-family="JetBrains Mono,monospace">wafer-scale · CMOS fab-compatible</text>
+            <rect x="20" y="298" width="280" height="36" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+            <text x="160" y="322" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Inter,sans-serif" font-weight="600">SiO₂ / Si Substrate · CMOS-compatible</text>
           </svg>
         </div>
       </div>
@@ -626,61 +757,70 @@
     </div>
     <span class="footer-copy">© 2025 Loop Labs · All rights reserved</span>
     <ul class="footer-links">
+      <li><a href="#comparison">Performance</a></li>
       <li><a href="#technology">Technology</a></li>
-      <li><a href="#performance">Performance</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
 </footer>
 
 <script>
-  // ── Intersection observer: animate bars on scroll ───────────────────────
-  const observer = new IntersectionObserver((entries) => {
+  // ── Animate comparison bars on scroll ──────────────────────────────────
+  const animateBars = (entries, observer) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const bar = document.getElementById('photo-bar');
-        if (bar) {
-          bar.style.transition = 'width 1.8s cubic-bezier(0.25,0.46,0.45,0.94)';
-          bar.style.width = '0.19%';
-          bar.textContent = '~656 pJ';
-          bar.style.paddingLeft = '0';
-          bar.style.color = 'var(--accent3)';
-          bar.style.fontSize = '0';
-        }
-        observer.disconnect();
+      if (!entry.isIntersecting) return;
+      const card = entry.target;
+      card.querySelectorAll('.c-fill').forEach(bar => {
+        const w = bar.dataset.w;
+        bar.style.width = w + '%';
+      });
+      observer.unobserve(card);
+    });
+  };
+  const barObs = new IntersectionObserver(animateBars, { threshold: 0.3 });
+  document.querySelectorAll('#time-card, #energy-card').forEach(c => barObs.observe(c));
+
+  // ── Problem section bar ────────────────────────────────────────────────
+  const problemObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const bar = document.getElementById('photo-bar');
+      if (bar) {
+        bar.style.transition = 'width 1.8s cubic-bezier(0.25,0.46,0.45,0.94)';
+        bar.style.width = '0.74%';
       }
+      problemObs.disconnect();
     });
   }, { threshold: 0.3 });
-
   const chart = document.getElementById('bar-chart');
-  if (chart) observer.observe(chart);
+  if (chart) problemObs.observe(chart);
 
   // ── Fade-up on scroll ───────────────────────────────────────────────────
-  const fadeObserver = new IntersectionObserver((entries) => {
+  const fadeObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
         entry.target.style.transform = 'none';
-        fadeObserver.unobserve(entry.target);
+        fadeObs.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.12 });
 
-  document.querySelectorAll('.tech-card, .step, .metric-card, .perf-table, .about-text p, .about-list li').forEach(el => {
+  document.querySelectorAll(
+    '.tech-card, .step, .metric-card, .perf-table, .about-text p, .about-list li, .adv-pill, .compare-card'
+  ).forEach(el => {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    fadeObserver.observe(el);
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+    fadeObs.observe(el);
   });
 
-  // ── Navbar scroll tint ──────────────────────────────────────────────────
+  // ── Navbar tint ─────────────────────────────────────────────────────────
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
-    if (window.scrollY > 20) {
-      nav.style.background = 'rgba(5,10,18,0.97)';
-    } else {
-      nav.style.background = 'rgba(5,10,18,0.85)';
-    }
+    nav.style.background = window.scrollY > 20
+      ? 'rgba(5,10,18,0.97)'
+      : 'rgba(5,10,18,0.85)';
   }, { passive: true });
 </script>
 
