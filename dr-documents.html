@@ -69,6 +69,30 @@
       text-underline-offset: 3px;
     }
 
+    .doc-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 5px;
+      padding: 4px 10px;
+      margin-left: 10px;
+      transition: background 0.18s, border-color 0.18s;
+      vertical-align: middle;
+      text-decoration: none;
+    }
+
+    .doc-download:hover {
+      background: rgba(0,212,255,0.08);
+      border-color: rgba(0,212,255,0.5);
+    }
+
     @media (max-width: 560px) {
       .doc-table th:nth-child(2),
       .doc-table td:nth-child(2) { display: none; }
@@ -117,28 +141,39 @@
       </thead>
       <tbody>
         <tr>
-          <td><div class="doc-name">Executive Summary</div></td>
+          <td>
+            <div class="doc-name">
+              Executive Summary
+              <a class="doc-download" href="assets/abstract.pdf" download="Loop_Labs_Executive_Summary.pdf">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1v6M2 7l3 2 3-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Download
+              </a>
+            </div>
+          </td>
           <td><div class="doc-cat">Overview</div></td>
           <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
         </tr>
         <tr>
-          <td><div class="doc-name">Pitch Deck</div></td>
+          <td>
+            <div class="doc-name">
+              Pitch Deck
+              <a class="doc-download" href="assets/Loop_Labs_Pitch.pdf" download="Loop_Labs_Pitch.pdf">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1v6M2 7l3 2 3-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Download
+              </a>
+            </div>
+          </td>
           <td><div class="doc-cat">Overview</div></td>
           <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
         </tr>
         <tr>
           <td><div class="doc-name">ZEN-1 Technical Brief</div></td>
           <td><div class="doc-cat">Technology</div></td>
-          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+          <td><span class="pill pill-purple"><span class="pill-dot"></span>In preparation</span></td>
         </tr>
         <tr>
           <td><div class="doc-name">IP Portfolio Summary</div></td>
           <td><div class="doc-cat">Legal</div></td>
-          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
-        </tr>
-        <tr>
-          <td><div class="doc-name">Financial Model</div></td>
-          <td><div class="doc-cat">Financials</div></td>
           <td><span class="pill pill-purple"><span class="pill-dot"></span>In preparation</span></td>
         </tr>
         <tr>
@@ -151,7 +186,7 @@
 
     <p class="doc-contact">
       To receive available documents write to
-      <a href="mailto:emanuele@oriqx.com">emanuele@oriqx.com</a>
+      <a href="mailto:emanuele.marsili.siena@gmail.com">emanuele.marsili.siena@gmail.com</a>
     </p>
   </div>
 </section>

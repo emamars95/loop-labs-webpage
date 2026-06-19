@@ -107,6 +107,13 @@
     @media (max-width: 560px) {
       .people-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Background logos strip ─────────────────────────────────────────── */
+    .bg-strip { margin-top: 52px; padding-top: 36px; border-top: 1px solid var(--border); }
+    .bg-strip-label { font-family: var(--mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+    .bg-logos { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .bg-logo { height: 36px; width: auto; opacity: 0.25; filter: grayscale(1) brightness(2); transition: opacity 0.2s; }
+    .bg-logo:hover { opacity: 0.5; }
   </style>
 </head>
 <body>
@@ -212,6 +219,16 @@
       </div>
 
     </div>
+
+    <!-- Background logos -->
+    <div class="bg-strip">
+      <div class="bg-strip-label">Where we come from</div>
+      <div class="bg-logos">
+        <img class="bg-logo" src="assets/unimi.png" alt="Università degli Studi di Milano" />
+        <img class="bg-logo" src="assets/airbus.png" alt="Airbus" />
+      </div>
+    </div>
+
   </div>
 </section>
 
