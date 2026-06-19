@@ -9,130 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="dataroom.css" />
   <style>
-    /* ── Gate ──────────────────────────────────────────────────────────── */
-    #gate {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: var(--ground);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.4s ease;
-    }
-
-    #gate.hide {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .gate-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 360px;
-      padding: 0 24px;
-    }
-
-    .gate-logo {
-      height: 26px;
-      width: auto;
-      margin-bottom: 36px;
-      opacity: 0.88;
-    }
-
-    .gate-badge {
-      font-family: var(--mono);
-      font-size: 0.66rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--purple);
-      background: var(--purple-dim);
-      border: 1px solid var(--purple-border);
-      border-radius: 4px;
-      padding: 4px 12px;
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .gate-badge::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--purple);
-      animation: pulse 2.4s ease-in-out infinite;
-    }
-
-    .gate-heading {
-      font-size: 1.55rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .gate-sub {
-      font-size: 0.84rem;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .gate-input {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      font-family: var(--mono);
-      font-size: 0.9rem;
-      color: var(--text);
-      letter-spacing: 0.1em;
-      outline: none;
-      transition: border-color 0.2s;
-      margin-bottom: 12px;
-    }
-
-    .gate-input:focus { border-color: rgba(123,92,250,0.5); }
-    .gate-input::placeholder { color: var(--muted); letter-spacing: 0.04em; font-size: 0.82rem; }
-
-    .gate-btn {
-      width: 100%;
-      background: var(--purple);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      padding: 13px 18px;
-      font-family: var(--font);
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      margin-bottom: 14px;
-    }
-
-    .gate-btn:hover { opacity: 0.85; }
-
-    .gate-error {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: #ff6b6b;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.2s;
-      min-height: 1.2em;
-    }
-
-    .gate-error.show { opacity: 1; }
-
-    /* ── Content blur while gate is active ─────────────────────────────── */
-    #content { transition: filter 0.4s ease; }
-    #content.locked { filter: blur(8px); pointer-events: none; user-select: none; }
-
     /* ── Landing header ────────────────────────────────────────────────── */
     #dr-header {
       position: relative;
@@ -291,28 +167,8 @@
 </head>
 <body>
 
-<!-- ── Gate ──────────────────────────────────────────────────────────────── -->
-<div id="gate">
-  <div class="gate-box">
-    <img src="assets/logo.png" class="gate-logo" alt="Loop Labs" onerror="this.style.display='none'" />
-    <div class="gate-badge">Restricted Access</div>
-    <h1 class="gate-heading">Data Room</h1>
-    <p class="gate-sub">Enter your access code to continue.</p>
-    <input
-      type="password"
-      id="gate-input"
-      class="gate-input"
-      placeholder="Access code"
-      autocomplete="off"
-      autofocus
-    />
-    <button id="gate-btn" class="gate-btn">Enter Data Room</button>
-    <div id="gate-error" class="gate-error">Incorrect access code — please try again.</div>
-  </div>
-</div>
-
 <!-- ── Main content ───────────────────────────────────────────────────────── -->
-<div id="content" class="locked">
+<div id="content">
 
 <nav id="navbar">
   <div class="nav-logo">
@@ -398,44 +254,6 @@
 </div><!-- /content -->
 
 <script>
-  // ── Passphrase — change the string below to update the access code ──────
-  const PASS = 'looplabs2025';
-
-  const gate   = document.getElementById('gate');
-  const content= document.getElementById('content');
-  const input  = document.getElementById('gate-input');
-  const errMsg = document.getElementById('gate-error');
-
-  function unlock() {
-    sessionStorage.setItem('dr_auth', '1');
-    // If redirected here from a sub-page, go back there after unlocking
-    const params   = new URLSearchParams(location.search);
-    const redirect = params.get('redirect');
-    if (redirect && /^dr-[a-z]+\.html$/.test(redirect)) {
-      location.href = redirect;
-      return;
-    }
-    gate.classList.add('hide');
-    content.classList.remove('locked');
-    setTimeout(() => { gate.style.display = 'none'; }, 450);
-  }
-
-  function attempt() {
-    if (input.value === PASS) {
-      unlock();
-    } else {
-      errMsg.classList.add('show');
-      input.value = '';
-      input.focus();
-      setTimeout(() => errMsg.classList.remove('show'), 3000);
-    }
-  }
-
-  document.getElementById('gate-btn').addEventListener('click', attempt);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
-
-  if (sessionStorage.getItem('dr_auth') === '1') unlock();
-
   // ── Interference pattern (header) ───────────────────────────────────────
   (function () {
     const canvas  = document.getElementById('interference-canvas');

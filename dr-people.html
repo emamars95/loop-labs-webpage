@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    // Redirect to gate if not authenticated
-    if (sessionStorage.getItem('dr_auth') !== '1') {
-      location.replace('dataroom.html?redirect=dr-people.html');
-    }
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Loop Labs — Data Room · Team</title>
@@ -111,9 +105,9 @@
     /* ── Background logos strip ─────────────────────────────────────────── */
     .bg-strip { margin-top: 52px; padding-top: 36px; border-top: 1px solid var(--border); }
     .bg-strip-label { font-family: var(--mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
-    .bg-logos { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
-    .bg-logo { height: 36px; width: auto; opacity: 0.25; filter: grayscale(1) brightness(2); transition: opacity 0.2s; }
-    .bg-logo:hover { opacity: 0.5; }
+    .bg-logos { display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
+    .bg-logo { height: 56px; width: auto; opacity: 0.7; filter: brightness(1.4); transition: opacity 0.2s; }
+    .bg-logo:hover { opacity: 1; }
   </style>
 </head>
 <body>
@@ -224,8 +218,11 @@
     <div class="bg-strip">
       <div class="bg-strip-label">Where we come from</div>
       <div class="bg-logos">
-        <img class="bg-logo" src="assets/unimi.png" alt="Università degli Studi di Milano" />
         <img class="bg-logo" src="assets/airbus.png" alt="Airbus" />
+        <img class="bg-logo" src="assets/leonardo.png" alt="Leonardo" />
+        <img class="bg-logo" src="assets/unimi.png" alt="Università degli Studi di Milano" />
+        <img class="bg-logo" src="assets/bristol.png" alt="University of Bristol" />
+        <img class="bg-logo" src="assets/politecnico.png" alt="Politecnico di Milano" />
       </div>
     </div>
 
