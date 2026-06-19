@@ -10,21 +10,21 @@
   <style>
     /* ── Tokens ────────────────────────────────────────────────────────── */
     :root {
-      --ground:      #080709;
-      --surface:     #0f0e11;
-      --surface-2:   #151318;
-      --surface-3:   #1c1a20;
-      --text:        #e8e2d8;
-      --muted:       #7a7078;
-      --border:      rgba(232,226,216,0.08);
-      --accent:      #00d4ff;
-      --green:       #39ff8e;
-      --gold:        #c9a84c;
-      --gold-dim:    rgba(201,168,76,0.10);
-      --gold-border: rgba(201,168,76,0.22);
-      --font:        'Inter', sans-serif;
-      --mono:        'JetBrains Mono', monospace;
-      --radius:      10px;
+      --ground:         #050a12;
+      --surface:        #080f1a;
+      --surface-2:      #0d1825;
+      --surface-3:      #122030;
+      --text:           #e4eaf4;
+      --muted:          #7a8fa8;
+      --border:         rgba(100,160,220,0.1);
+      --accent:         #00d4ff;
+      --green:          #39ff8e;
+      --purple:         #7b5cfa;
+      --purple-dim:     rgba(123,92,250,0.12);
+      --purple-border:  rgba(123,92,250,0.28);
+      --font:           'Inter', sans-serif;
+      --mono:           'JetBrains Mono', monospace;
+      --radius:         10px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -78,9 +78,9 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--gold);
-      background: var(--gold-dim);
-      border: 1px solid var(--gold-border);
+      color: var(--purple);
+      background: var(--purple-dim);
+      border: 1px solid var(--purple-border);
       border-radius: 4px;
       padding: 4px 12px;
       margin-bottom: 28px;
@@ -93,7 +93,7 @@
       content: '';
       width: 5px; height: 5px;
       border-radius: 50%;
-      background: var(--gold);
+      background: var(--purple);
       animation: pulse 2.4s ease-in-out infinite;
     }
 
@@ -132,13 +132,13 @@
       margin-bottom: 12px;
     }
 
-    .gate-input:focus { border-color: rgba(201,168,76,0.45); }
+    .gate-input:focus { border-color: rgba(123,92,250,0.5); }
     .gate-input::placeholder { color: var(--muted); letter-spacing: 0.04em; font-size: 0.82rem; }
 
     .gate-btn {
       width: 100%;
-      background: var(--gold);
-      color: #060506;
+      background: var(--purple);
+      color: #ffffff;
       border: none;
       border-radius: var(--radius);
       padding: 13px 18px;
@@ -207,9 +207,9 @@
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--gold);
-      background: var(--gold-dim);
-      border: 1px solid var(--gold-border);
+      color: var(--purple);
+      background: var(--purple-dim);
+      border: 1px solid var(--purple-border);
       border-radius: 4px;
       padding: 4px 12px;
       display: flex;
@@ -221,7 +221,7 @@
       content: '';
       width: 5px; height: 5px;
       border-radius: 50%;
-      background: var(--gold);
+      background: var(--purple);
       animation: pulse 2.4s ease-in-out infinite;
     }
 
@@ -282,7 +282,7 @@
       text-transform: uppercase;
       line-height: 1;
       margin-bottom: 32px;
-      text-shadow: 0 0 100px rgba(201,168,76,0.1);
+      text-shadow: 0 0 100px rgba(0,212,255,0.12);
     }
 
     .dr-meta {
@@ -354,7 +354,7 @@
     /* ── A — People ────────────────────────────────────────────────────── */
     .people-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
 
@@ -362,20 +362,14 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 28px;
+      padding: 28px 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-    }
-
-    .person-card.placeholder {
-      border-style: dashed;
-      border-color: rgba(232,226,216,0.1);
-      background: transparent;
+      gap: 12px;
     }
 
     .person-avatar {
-      width: 50px; height: 50px;
+      width: 68px; height: 68px;
       border-radius: 50%;
       background: var(--surface-2);
       border: 1.5px solid var(--border);
@@ -383,6 +377,8 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: 4px;
     }
 
     .person-avatar img {
@@ -400,40 +396,50 @@
 
     .person-role {
       font-family: var(--mono);
-      font-size: 0.7rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--accent);
-      letter-spacing: 0.04em;
       margin-top: 2px;
     }
 
-    .person-bio {
-      font-size: 0.83rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+    .person-role.advisor { color: var(--purple); }
 
-    .person-links {
-      display: flex;
-      gap: 8px;
-      margin-top: auto;
-      padding-top: 6px;
-    }
-
-    .person-link {
-      font-family: var(--mono);
-      font-size: 0.66rem;
-      color: var(--muted);
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 4px 10px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .person-link:hover {
+    .person-tagline {
+      font-size: 0.82rem;
       color: var(--text);
-      border-color: rgba(232,226,216,0.2);
+      line-height: 1.55;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
     }
+
+    .person-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: auto;
+      padding-top: 4px;
+    }
+
+    .person-bullets li {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .person-bullets li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .person-bullets li.advisor-bullet::before { color: var(--purple); }
 
     /* ── B — Documents ─────────────────────────────────────────────────── */
     .doc-table {
@@ -501,10 +507,10 @@
       border: 1px solid rgba(57,255,142,0.2);
     }
 
-    .pill-gold {
-      color: var(--gold);
-      background: var(--gold-dim);
-      border: 1px solid var(--gold-border);
+    .pill-purple {
+      color: var(--purple);
+      background: var(--purple-dim);
+      border: 1px solid var(--purple-border);
     }
 
     .pill-muted {
@@ -652,6 +658,10 @@
       .tech-cols              { grid-template-columns: 1fr; gap: 32px; }
     }
 
+    @media (max-width: 860px) {
+      .people-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @media (max-width: 560px) {
       .doc-table th:nth-child(2),
       .doc-table td:nth-child(2) { display: none; }
@@ -729,29 +739,75 @@
     <div class="section-desc">Founders and key contributors building Loop Labs.</div>
 
     <div class="people-grid">
-      <!--
-        Replace this placeholder with real cards.
-        Duplicate the block for each team member.
-        To add a photo, replace the <svg> inside .person-avatar with:
-        <img src="assets/your-photo.jpg" alt="Name" />
-      -->
-      <div class="person-card placeholder">
+
+      <!-- Emanuele Marsili — CEO -->
+      <div class="person-card">
         <div class="person-avatar">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="8" r="5" stroke="#e8e2d8" stroke-width="1.4"/>
-            <path d="M3 22c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
+          <img src="assets/emanuele.png" alt="Emanuele Marsili" />
         </div>
         <div>
-          <div class="person-name" style="color:var(--muted);font-style:italic;">Your name</div>
-          <div class="person-role">Co-founder · Role</div>
+          <div class="person-name">Emanuele Marsili</div>
+          <div class="person-role">CEO</div>
         </div>
-        <div class="person-bio">Add a short bio — research background, previous experience, and what you bring to Loop Labs.</div>
-        <div class="person-links">
-          <a href="#" class="person-link">LinkedIn</a>
-          <a href="#" class="person-link">Scholar</a>
-        </div>
+        <div class="person-tagline">Driving product vision, strategy and industrial execution</div>
+        <ul class="person-bullets">
+          <li>Project Lead at Airbus</li>
+          <li>Disruptive application of quantum computing in aerospace</li>
+          <li>Leader of quantum-inspired methods for AI</li>
+        </ul>
       </div>
+
+      <!-- Marco Maronese — CTO -->
+      <div class="person-card">
+        <div class="person-avatar">
+          <img src="assets/marco.jpeg" alt="Marco Maronese" />
+        </div>
+        <div>
+          <div class="person-name">Marco Maronese</div>
+          <div class="person-role">CTO</div>
+        </div>
+        <div class="person-tagline">Leading architecture, algorithms and system design</div>
+        <ul class="person-bullets">
+          <li>Co-founder &amp; CTO at Qbrain</li>
+          <li>Quantum Computing Scientist at Leonardo</li>
+          <li>Specialist in the interface between quantum computing and AI</li>
+        </ul>
+      </div>
+
+      <!-- Sebastiano Corli — CSO -->
+      <div class="person-card">
+        <div class="person-avatar">
+          <img src="assets/sebastiano.jpeg" alt="Sebastiano Corli" />
+        </div>
+        <div>
+          <div class="person-name">Sebastiano Corli</div>
+          <div class="person-role">CSO</div>
+        </div>
+        <div class="person-tagline">Architecting photonic chips and algorithms for edge AI</div>
+        <ul class="person-bullets">
+          <li>Postdoctoral Research Fellow at University of Milan</li>
+          <li>Photonic chip design and specification specialist</li>
+          <li>Photonics algorithm architect for edge computing</li>
+        </ul>
+      </div>
+
+      <!-- Enrico Prati — Scientific Advisor -->
+      <div class="person-card">
+        <div class="person-avatar">
+          <img src="assets/enrico.jpeg" alt="Enrico Prati" />
+        </div>
+        <div>
+          <div class="person-name">Enrico Prati</div>
+          <div class="person-role advisor">Scientific Advisor</div>
+        </div>
+        <div class="person-tagline">Providing direction and expertise in photonics and quantum technologies</div>
+        <ul class="person-bullets">
+          <li class="advisor-bullet">Professor at University of Milan</li>
+          <li class="advisor-bullet">20+ years of research in quantum and photonic technologies</li>
+          <li class="advisor-bullet">Pioneer in neuromorphic quantum computing and quantum-AI architectures</li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </section>
@@ -795,7 +851,7 @@
         <tr>
           <td><div class="doc-name">Financial Model</div></td>
           <td><div class="doc-cat">Financials</div></td>
-          <td><span class="pill pill-gold"><span class="pill-dot"></span>In preparation</span></td>
+          <td><span class="pill pill-purple"><span class="pill-dot"></span>In preparation</span></td>
         </tr>
         <tr>
           <td><div class="doc-name">Cap Table</div></td>
@@ -932,9 +988,9 @@
           const v  = Math.cos(2 * Math.PI * r1 / lam) + Math.cos(2 * Math.PI * r2 / lam);
           const n  = (v + 2) / 4;
           const i  = (y * W + x) * 4;
-          d[i]   = Math.round(201 * n);
-          d[i+1] = Math.round(168 * n);
-          d[i+2] = Math.round(76  * n);
+          d[i]   = Math.round(0   * n);
+          d[i+1] = Math.round(212 * n);
+          d[i+2] = Math.round(255 * n);
           d[i+3] = 255;
         }
       }
