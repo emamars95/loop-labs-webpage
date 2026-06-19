@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // Redirect to gate if not authenticated
+    if (sessionStorage.getItem('dr_auth') !== '1') {
+      location.replace('dataroom.html?redirect=dr-people.html');
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop Labs — Data Room · Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dataroom.css" />
+  <style>
+    /* ── People grid ───────────────────────────────────────────────────── */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .person-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .person-avatar {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: 4px;
+    }
+
+    .person-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .person-name {
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: -0.01em;
+    }
+
+    .person-role {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .person-role.advisor { color: var(--purple); }
+
+    .person-tagline {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.55;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .person-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: auto;
+      padding-top: 4px;
+    }
+
+    .person-bullets li {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .person-bullets li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .person-bullets li.advisor-bullet::before { color: var(--purple); }
+
+    @media (max-width: 860px) {
+      .people-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .people-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="assets/logo.png" alt="Loop Labs" onerror="this.style.display='none'" />
+    Loop Labs
+  </div>
+  <div class="nav-badge">Restricted Access</div>
+  <a href="dataroom.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Data Room
+  </a>
+</nav>
+
+<section id="page-header">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="dataroom.html">Data Room</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current">Team</span>
+    </div>
+    <h1 class="page-title">Team</h1>
+    <p class="page-desc">Founders and key contributors building Loop Labs.</p>
+  </div>
+</section>
+
+<section class="dr-section">
+  <div class="container">
+    <div class="section-label">A &nbsp;·&nbsp; People</div>
+
+    <div class="people-grid">
+
+      <!-- Emanuele Marsili — CEO -->
+      <div class="person-card">
+        <div class="person-avatar">
+          <img src="assets/emanuele.png" alt="Emanuele Marsili" />
+        </div>
+        <div>
+          <div class="person-name">Emanuele Marsili</div>
+          <div class="person-role">CEO</div>
+        </div>
+        <div class="person-tagline">Driving product vision, strategy and industrial execution</div>
+        <ul class="person-bullets">
+          <li>Project Lead at Airbus</li>
+          <li>Disruptive application of quantum computing in aerospace</li>
+          <li>Leader of quantum-inspired methods for AI</li>
+        </ul>
+      </div>
+
+      <!-- Marco Maronese — CTO -->
+      <div class="person-card">
+        <div class="person-avatar">
+          <img src="assets/marco.jpeg" alt="Marco Maronese" />
+        </div>
+        <div>
+          <div class="person-name">Marco Maronese</div>
+          <div class="person-role">CTO</div>
+        </div>
+        <div class="person-tagline">Leading architecture, algorithms and system design</div>
+        <ul class="person-bullets">
+          <li>Co-founder &amp; CTO at Qbrain</li>
+          <li>Quantum Computing Scientist at Leonardo</li>
+          <li>Specialist in the interface between quantum computing and AI</li>
+        </ul>
+      </div>
+
+      <!-- Sebastiano Corli — CSO -->
+      <div class="person-card">
+        <div class="person-avatar">
+          <img src="assets/sebastiano.jpeg" alt="Sebastiano Corli" />
+        </div>
+        <div>
+          <div class="person-name">Sebastiano Corli</div>
+          <div class="person-role">CSO</div>
+        </div>
+        <div class="person-tagline">Architecting photonic chips and algorithms for edge AI</div>
+        <ul class="person-bullets">
+          <li>Postdoctoral Research Fellow at University of Milan</li>
+          <li>Photonic chip design and specification specialist</li>
+          <li>Photonics algorithm architect for edge computing</li>
+        </ul>
+      </div>
+
+      <!-- Enrico Prati — Scientific Advisor -->
+      <div class="person-card">
+        <div class="person-avatar">
+          <img src="assets/enrico.jpeg" alt="Enrico Prati" />
+        </div>
+        <div>
+          <div class="person-name">Enrico Prati</div>
+          <div class="person-role advisor">Scientific Advisor</div>
+        </div>
+        <div class="person-tagline">Providing direction and expertise in photonics and quantum technologies</div>
+        <ul class="person-bullets">
+          <li class="advisor-bullet">Professor at University of Milan</li>
+          <li class="advisor-bullet">20+ years of research in quantum and photonic technologies</li>
+          <li class="advisor-bullet">Pioneer in neuromorphic quantum computing and quantum-AI architectures</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="foot-note">© 2025 Loop Labs · All rights reserved</span>
+  <span class="foot-note">Confidential · Authorised recipients only</span>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.background =
+      window.scrollY > 20 ? 'rgba(5,10,18,0.98)' : 'rgba(5,10,18,0.92)';
+  }, { passive: true });
+</script>
+
+</body>
+</html>

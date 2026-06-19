@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    if (sessionStorage.getItem('dr_auth') !== '1') {
+      location.replace('dataroom.html?redirect=dr-technology.html');
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop Labs — Data Room · Technology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dataroom.css" />
+  <style>
+    /* ── Stats grid ────────────────────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 52px;
+    }
+
+    .stat-cell {
+      background: var(--surface);
+      padding: 28px 24px;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .stat-sub { font-size: 0.74rem; color: var(--muted); }
+
+    .c { color: var(--accent); }
+    .g { color: var(--green); }
+
+    /* ── Two-column layout ─────────────────────────────────────────────── */
+    .tech-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 52px;
+      margin-bottom: 52px;
+    }
+
+    .tech-block-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .tech-item::before {
+      content: '·';
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Academic origin ───────────────────────────────────────────────── */
+    .origin-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .origin-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .origin-chip {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 12px;
+    }
+
+    @media (max-width: 860px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .tech-cols  { grid-template-columns: 1fr; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="assets/logo.png" alt="Loop Labs" onerror="this.style.display='none'" />
+    Loop Labs
+  </div>
+  <div class="nav-badge">Restricted Access</div>
+  <a href="dataroom.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Data Room
+  </a>
+</nav>
+
+<section id="page-header">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="dataroom.html">Data Room</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current">Technology</span>
+    </div>
+    <h1 class="page-title">Technical Overview</h1>
+    <p class="page-desc">Key results from the ZEN-1 prototype and a summary of the core architecture.</p>
+  </div>
+</section>
+
+<section class="dr-section">
+  <div class="container">
+    <div class="section-label">C &nbsp;·&nbsp; Technology</div>
+
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-label">Energy / Operation</div>
+        <div class="stat-value"><span class="c">33.5</span></div>
+        <div class="stat-sub">fJ/OP · ZEN-1 prototype</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Throughput</div>
+        <div class="stat-value"><span class="c">0.64</span></div>
+        <div class="stat-sub">TOPS · ZEN-1 prototype</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Speed vs A100</div>
+        <div class="stat-value"><span class="g">6×</span></div>
+        <div class="stat-sub">faster · N=64 benchmark</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Energy vs A100</div>
+        <div class="stat-value"><span class="g">135×</span></div>
+        <div class="stat-sub">lower · N=64 benchmark</div>
+      </div>
+    </div>
+
+    <div class="tech-cols">
+      <div>
+        <div class="tech-block-title">Architecture</div>
+        <div class="tech-item">Thin-film lithium niobate (TFLN) platform at 1550 nm telecom wavelength, CMOS-compatible fabrication</div>
+        <div class="tech-item">Loop architecture — recirculating time-bin encoding replaces large spatial MZM arrays, dramatically reducing footprint</div>
+        <div class="tech-item">On-chip optical non-linear activation eliminates the optical-to-electrical conversion bottleneck</div>
+        <div class="tech-item">Inverse power scaling: efficiency improves as N grows — opposite to GPU O(N²) cost</div>
+      </div>
+      <div>
+        <div class="tech-block-title">ZEN-1 Benchmark Detail</div>
+        <div class="tech-item">Matrix fidelity 98.5% · Inference accuracy 99%</div>
+        <div class="tech-item">Latency: 7.2 ns (Loop Labs) vs 45.4 ns (NVIDIA A100) at N=64</div>
+        <div class="tech-item">Energy: 22 nJ (Loop Labs) vs 2,980 nJ (NVIDIA A100) at N=64</div>
+        <div class="tech-item">Modular Tensor Scalability enables efficient operation beyond 100+ channels</div>
+      </div>
+    </div>
+
+    <div class="origin-row">
+      <span class="origin-label">Academic origin</span>
+      <span class="origin-chip">Università degli Studi di Milano</span>
+      <span class="origin-chip">Politecnico di Milano</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="foot-note">© 2025 Loop Labs · All rights reserved</span>
+  <span class="foot-note">Confidential · Authorised recipients only</span>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.background =
+      window.scrollY > 20 ? 'rgba(5,10,18,0.98)' : 'rgba(5,10,18,0.92)';
+  }, { passive: true });
+</script>
+
+</body>
+</html>

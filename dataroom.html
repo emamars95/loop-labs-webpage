@@ -7,39 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dataroom.css" />
   <style>
-    /* ── Tokens ────────────────────────────────────────────────────────── */
-    :root {
-      --ground:         #050a12;
-      --surface:        #080f1a;
-      --surface-2:      #0d1825;
-      --surface-3:      #122030;
-      --text:           #e4eaf4;
-      --muted:          #7a8fa8;
-      --border:         rgba(100,160,220,0.1);
-      --accent:         #00d4ff;
-      --green:          #39ff8e;
-      --purple:         #7b5cfa;
-      --purple-dim:     rgba(123,92,250,0.12);
-      --purple-border:  rgba(123,92,250,0.28);
-      --font:           'Inter', sans-serif;
-      --mono:           'JetBrains Mono', monospace;
-      --radius:         10px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--ground);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 16px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; text-decoration: none; }
-
-    /* ── Gate overlay ──────────────────────────────────────────────────── */
+    /* ── Gate ──────────────────────────────────────────────────────────── */
     #gate {
       position: fixed;
       inset: 0;
@@ -97,11 +67,6 @@
       animation: pulse 2.4s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.2; }
-    }
-
     .gate-heading {
       font-size: 1.55rem;
       font-weight: 700;
@@ -138,7 +103,7 @@
     .gate-btn {
       width: 100%;
       background: var(--purple);
-      color: #ffffff;
+      color: #fff;
       border: none;
       border-radius: var(--radius);
       padding: 13px 18px;
@@ -164,82 +129,11 @@
 
     .gate-error.show { opacity: 1; }
 
-    /* ── Content (blurred while gate is active) ────────────────────────── */
-    #content {
-      transition: filter 0.4s ease;
-    }
+    /* ── Content blur while gate is active ─────────────────────────────── */
+    #content { transition: filter 0.4s ease; }
+    #content.locked { filter: blur(8px); pointer-events: none; user-select: none; }
 
-    #content.locked {
-      filter: blur(8px);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    /* ── Nav ───────────────────────────────────────────────────────────── */
-    #navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      background: rgba(8,7,9,0.92);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .nav-logo img { height: 22px; width: auto; }
-
-    .nav-badge {
-      font-family: var(--mono);
-      font-size: 0.66rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--purple);
-      background: var(--purple-dim);
-      border: 1px solid var(--purple-border);
-      border-radius: 4px;
-      padding: 4px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-badge::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--purple);
-      animation: pulse 2.4s ease-in-out infinite;
-    }
-
-    .nav-back {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-family: var(--mono);
-      font-size: 0.74rem;
-      color: var(--muted);
-      transition: color 0.2s;
-    }
-
-    .nav-back:hover { color: var(--text); }
-    .nav-back svg { transition: transform 0.2s; flex-shrink: 0; }
-    .nav-back:hover svg { transform: translateX(-2px); }
-
-    /* ── Header ────────────────────────────────────────────────────────── */
+    /* ── Landing header ────────────────────────────────────────────────── */
     #dr-header {
       position: relative;
       padding: 128px 0 72px;
@@ -250,8 +144,7 @@
     #interference-canvas {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       opacity: 0.16;
       pointer-events: none;
     }
@@ -299,385 +192,106 @@
       letter-spacing: 0.05em;
     }
 
-    .meta-sep {
-      width: 1px; height: 12px;
-      background: var(--border);
-      flex-shrink: 0;
+    .meta-sep { width: 1px; height: 12px; background: var(--border); flex-shrink: 0; }
+
+    /* ── Section cards grid ────────────────────────────────────────────── */
+    #sections { padding: 72px 0 100px; }
+
+    .sections-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
 
-    /* ── Layout ────────────────────────────────────────────────────────── */
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 40px;
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      min-height: 240px;
     }
 
-    .dr-section {
-      padding: 72px 0;
-      border-bottom: 1px solid var(--border);
+    .section-card:hover {
+      background: var(--surface-2);
+      border-color: rgba(100,160,220,0.2);
+      transform: translateY(-2px);
     }
 
-    .section-label {
+    .card-id {
       font-family: var(--mono);
       font-size: 0.63rem;
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .section-title {
-      font-size: 1.55rem;
+    .card-title {
+      font-size: 1.2rem;
       font-weight: 700;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
       margin-bottom: 8px;
     }
 
-    .section-desc {
-      font-size: 0.86rem;
-      color: var(--muted);
-      margin-bottom: 44px;
-      max-width: 540px;
-    }
-
-    /* ── A — People ────────────────────────────────────────────────────── */
-    .people-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .person-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .person-avatar {
-      width: 68px; height: 68px;
-      border-radius: 50%;
-      background: var(--surface-2);
-      border: 1.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex-shrink: 0;
-      margin-bottom: 4px;
-    }
-
-    .person-avatar img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-
-    .person-avatar svg { opacity: 0.28; }
-
-    .person-name {
-      font-weight: 700;
-      font-size: 0.98rem;
-      letter-spacing: -0.01em;
-    }
-
-    .person-role {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-top: 2px;
-    }
-
-    .person-role.advisor { color: var(--purple); }
-
-    .person-tagline {
-      font-size: 0.82rem;
-      color: var(--text);
-      line-height: 1.55;
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-    }
-
-    .person-bullets {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      margin-top: auto;
-      padding-top: 4px;
-    }
-
-    .person-bullets li {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.5;
-      padding-left: 14px;
-      position: relative;
-    }
-
-    .person-bullets li::before {
-      content: '·';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .person-bullets li.advisor-bullet::before { color: var(--purple); }
-
-    /* ── B — Documents ─────────────────────────────────────────────────── */
-    .doc-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .doc-table th {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-align: left;
-      padding: 0 16px 14px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .doc-table th:first-child { padding-left: 0; }
-
-    .doc-table td {
-      padding: 16px;
-      border-bottom: 1px solid rgba(232,226,216,0.04);
-      font-size: 0.86rem;
-      vertical-align: middle;
-    }
-
-    .doc-table td:first-child { padding-left: 0; }
-    .doc-table tr:last-child td { border-bottom: none; }
-    .doc-table tr:hover td { background: rgba(232,226,216,0.015); }
-
-    .doc-name { font-weight: 500; }
-
-    .doc-cat {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border-radius: 4px;
-      padding: 3px 10px;
-      white-space: nowrap;
-    }
-
-    .pill-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: currentColor;
-      flex-shrink: 0;
-    }
-
-    .pill-green {
-      color: var(--green);
-      background: rgba(57,255,142,0.08);
-      border: 1px solid rgba(57,255,142,0.2);
-    }
-
-    .pill-purple {
-      color: var(--purple);
-      background: var(--purple-dim);
-      border: 1px solid var(--purple-border);
-    }
-
-    .pill-muted {
-      color: var(--muted);
-      background: rgba(232,226,216,0.04);
-      border: 1px solid var(--border);
-    }
-
-    .doc-contact {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-top: 24px;
-    }
-
-    .doc-contact a {
-      color: var(--accent);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    /* ── C — Technology ────────────────────────────────────────────────── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      margin-bottom: 48px;
-    }
-
-    .stat-cell {
-      background: var(--surface);
-      padding: 28px 24px;
-    }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    .stat-value {
-      font-family: var(--mono);
-      font-size: 1.65rem;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 6px;
-    }
-
-    .stat-sub {
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
-
-    .c { color: var(--accent); }
-    .g { color: var(--green); }
-
-    .tech-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 48px;
-    }
-
-    .tech-block-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 18px;
-    }
-
-    .tech-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.84rem;
+    .card-desc {
+      font-size: 0.83rem;
       color: var(--muted);
       line-height: 1.6;
-      margin-bottom: 12px;
+      margin-bottom: 28px;
     }
 
-    .tech-item::before {
-      content: '·';
-      color: var(--accent);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .origin-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding-top: 8px;
-      border-top: 1px solid var(--border);
-    }
-
-    .origin-label {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-    }
-
-    .origin-chip {
+    .card-count {
       font-family: var(--mono);
       font-size: 0.7rem;
-      color: var(--text);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 4px 12px;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-top: auto;
+      margin-bottom: 20px;
     }
 
-    /* ── Footer ────────────────────────────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 40px;
+    .card-cta {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .foot-note {
+      gap: 6px;
       font-family: var(--mono);
-      font-size: 0.68rem;
+      font-size: 0.72rem;
+      font-weight: 600;
       color: var(--muted);
       letter-spacing: 0.04em;
+      transition: color 0.2s;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
     }
+
+    .section-card:hover .card-cta { color: var(--text); }
+
+    .card-cta-arrow {
+      transition: transform 0.2s;
+    }
+
+    .section-card:hover .card-cta-arrow { transform: translateX(3px); }
 
     /* ── Responsive ────────────────────────────────────────────────────── */
     @media (max-width: 860px) {
-      #navbar, footer         { padding: 0 20px; }
-      footer                  { padding: 24px 20px; }
-      .header-inner, .container { padding: 0 20px; }
-      .stats-grid             { grid-template-columns: repeat(2, 1fr); }
-      .tech-cols              { grid-template-columns: 1fr; gap: 32px; }
-    }
-
-    @media (max-width: 860px) {
-      .people-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 560px) {
-      .doc-table th:nth-child(2),
-      .doc-table td:nth-child(2) { display: none; }
-      .people-grid            { grid-template-columns: 1fr; }
+      .sections-grid  { grid-template-columns: 1fr; }
+      .header-inner   { padding: 0 20px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .gate-badge::before,
-      .nav-badge::before { animation: none; }
-      #gate, #content { transition: none; }
+      .gate-badge::before { animation: none; }
+      #gate, #content, .section-card { transition: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── Gate ─────────────────────────────────────────────────────────────── -->
+<!-- ── Gate ──────────────────────────────────────────────────────────────── -->
 <div id="gate">
   <div class="gate-box">
     <img src="assets/logo.png" class="gate-logo" alt="Loop Labs" onerror="this.style.display='none'" />
@@ -697,10 +311,9 @@
   </div>
 </div>
 
-<!-- ── Main content ──────────────────────────────────────────────────────── -->
+<!-- ── Main content ───────────────────────────────────────────────────────── -->
 <div id="content" class="locked">
 
-<!-- Nav -->
 <nav id="navbar">
   <div class="nav-logo">
     <img src="assets/logo.png" alt="Loop Labs" onerror="this.style.display='none'" />
@@ -715,7 +328,6 @@
   </a>
 </nav>
 
-<!-- Header -->
 <section id="dr-header">
   <canvas id="interference-canvas"></canvas>
   <div class="header-inner">
@@ -731,202 +343,53 @@
   </div>
 </section>
 
-<!-- ── A — People ────────────────────────────────────────────────────────── -->
-<section class="dr-section" id="section-people">
+<section id="sections">
   <div class="container">
-    <div class="section-label">A &nbsp;·&nbsp; People</div>
-    <div class="section-title">Team</div>
-    <div class="section-desc">Founders and key contributors building Loop Labs.</div>
+    <div class="sections-grid">
 
-    <div class="people-grid">
+      <a href="dr-people.html" class="section-card">
+        <div class="card-id">A &nbsp;·&nbsp; People</div>
+        <div class="card-title">Team</div>
+        <div class="card-desc">Founders and key contributors building Loop Labs.</div>
+        <div class="card-count">4 profiles</div>
+        <div class="card-cta">
+          View section
+          <svg class="card-cta-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </a>
 
-      <!-- Emanuele Marsili — CEO -->
-      <div class="person-card">
-        <div class="person-avatar">
-          <img src="assets/emanuele.png" alt="Emanuele Marsili" />
+      <a href="dr-documents.html" class="section-card">
+        <div class="card-id">B &nbsp;·&nbsp; Documents</div>
+        <div class="card-title">Files</div>
+        <div class="card-desc">Core materials for authorised investors — deck, brief, IP summary.</div>
+        <div class="card-count">6 documents · 4 available now</div>
+        <div class="card-cta">
+          View section
+          <svg class="card-cta-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div>
-          <div class="person-name">Emanuele Marsili</div>
-          <div class="person-role">CEO</div>
-        </div>
-        <div class="person-tagline">Driving product vision, strategy and industrial execution</div>
-        <ul class="person-bullets">
-          <li>Project Lead at Airbus</li>
-          <li>Disruptive application of quantum computing in aerospace</li>
-          <li>Leader of quantum-inspired methods for AI</li>
-        </ul>
-      </div>
+      </a>
 
-      <!-- Marco Maronese — CTO -->
-      <div class="person-card">
-        <div class="person-avatar">
-          <img src="assets/marco.jpeg" alt="Marco Maronese" />
+      <a href="dr-technology.html" class="section-card">
+        <div class="card-id">C &nbsp;·&nbsp; Technology</div>
+        <div class="card-title">Technical</div>
+        <div class="card-desc">ZEN-1 prototype results, benchmarks and architecture overview.</div>
+        <div class="card-count">135× lower energy vs A100</div>
+        <div class="card-cta">
+          View section
+          <svg class="card-cta-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div>
-          <div class="person-name">Marco Maronese</div>
-          <div class="person-role">CTO</div>
-        </div>
-        <div class="person-tagline">Leading architecture, algorithms and system design</div>
-        <ul class="person-bullets">
-          <li>Co-founder &amp; CTO at Qbrain</li>
-          <li>Quantum Computing Scientist at Leonardo</li>
-          <li>Specialist in the interface between quantum computing and AI</li>
-        </ul>
-      </div>
-
-      <!-- Sebastiano Corli — CSO -->
-      <div class="person-card">
-        <div class="person-avatar">
-          <img src="assets/sebastiano.jpeg" alt="Sebastiano Corli" />
-        </div>
-        <div>
-          <div class="person-name">Sebastiano Corli</div>
-          <div class="person-role">CSO</div>
-        </div>
-        <div class="person-tagline">Architecting photonic chips and algorithms for edge AI</div>
-        <ul class="person-bullets">
-          <li>Postdoctoral Research Fellow at University of Milan</li>
-          <li>Photonic chip design and specification specialist</li>
-          <li>Photonics algorithm architect for edge computing</li>
-        </ul>
-      </div>
-
-      <!-- Enrico Prati — Scientific Advisor -->
-      <div class="person-card">
-        <div class="person-avatar">
-          <img src="assets/enrico.jpeg" alt="Enrico Prati" />
-        </div>
-        <div>
-          <div class="person-name">Enrico Prati</div>
-          <div class="person-role advisor">Scientific Advisor</div>
-        </div>
-        <div class="person-tagline">Providing direction and expertise in photonics and quantum technologies</div>
-        <ul class="person-bullets">
-          <li class="advisor-bullet">Professor at University of Milan</li>
-          <li class="advisor-bullet">20+ years of research in quantum and photonic technologies</li>
-          <li class="advisor-bullet">Pioneer in neuromorphic quantum computing and quantum-AI architectures</li>
-        </ul>
-      </div>
+      </a>
 
     </div>
   </div>
 </section>
 
-<!-- ── B — Documents ─────────────────────────────────────────────────────── -->
-<section class="dr-section" id="section-documents">
-  <div class="container">
-    <div class="section-label">B &nbsp;·&nbsp; Documents</div>
-    <div class="section-title">Files</div>
-    <div class="section-desc">Core materials for authorised investors. Contact us to receive available documents.</div>
-
-    <table class="doc-table">
-      <thead>
-        <tr>
-          <th>Document</th>
-          <th>Category</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><div class="doc-name">Executive Summary</div></td>
-          <td><div class="doc-cat">Overview</div></td>
-          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
-        </tr>
-        <tr>
-          <td><div class="doc-name">Pitch Deck</div></td>
-          <td><div class="doc-cat">Overview</div></td>
-          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
-        </tr>
-        <tr>
-          <td><div class="doc-name">ZEN-1 Technical Brief</div></td>
-          <td><div class="doc-cat">Technology</div></td>
-          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
-        </tr>
-        <tr>
-          <td><div class="doc-name">IP Portfolio Summary</div></td>
-          <td><div class="doc-cat">Legal</div></td>
-          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
-        </tr>
-        <tr>
-          <td><div class="doc-name">Financial Model</div></td>
-          <td><div class="doc-cat">Financials</div></td>
-          <td><span class="pill pill-purple"><span class="pill-dot"></span>In preparation</span></td>
-        </tr>
-        <tr>
-          <td><div class="doc-name">Cap Table</div></td>
-          <td><div class="doc-cat">Financials</div></td>
-          <td><span class="pill pill-muted"><span class="pill-dot"></span>On request</span></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p class="doc-contact">
-      To receive available documents, write to
-      <a href="mailto:emanuele@oriqx.com">emanuele@oriqx.com</a>
-    </p>
-  </div>
-</section>
-
-<!-- ── C — Technology ────────────────────────────────────────────────────── -->
-<section class="dr-section" id="section-technology">
-  <div class="container">
-    <div class="section-label">C &nbsp;·&nbsp; Technology</div>
-    <div class="section-title">Technical Overview</div>
-    <div class="section-desc">Key results from the ZEN-1 prototype and a summary of the core architecture.</div>
-
-    <!-- Stats -->
-    <div class="stats-grid">
-      <div class="stat-cell">
-        <div class="stat-label">Energy / Operation</div>
-        <div class="stat-value"><span class="c">33.5</span></div>
-        <div class="stat-sub">fJ/OP · ZEN-1 prototype</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-label">Throughput</div>
-        <div class="stat-value"><span class="c">0.64</span></div>
-        <div class="stat-sub">TOPS · ZEN-1 prototype</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-label">Speed vs A100</div>
-        <div class="stat-value"><span class="g">6×</span></div>
-        <div class="stat-sub">faster · N=64 benchmark</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-label">Energy vs A100</div>
-        <div class="stat-value"><span class="g">135×</span></div>
-        <div class="stat-sub">lower · N=64 benchmark</div>
-      </div>
-    </div>
-
-    <!-- Architecture + benchmark -->
-    <div class="tech-cols">
-      <div>
-        <div class="tech-block-title">Architecture</div>
-        <div class="tech-item">Thin-film lithium niobate (TFLN) platform at 1550 nm telecom wavelength, CMOS-compatible fabrication</div>
-        <div class="tech-item">Loop architecture — recirculating time-bin encoding replaces large spatial MZM arrays, dramatically reducing footprint</div>
-        <div class="tech-item">On-chip optical non-linear activation eliminates the optical-to-electrical conversion bottleneck</div>
-        <div class="tech-item">Inverse power scaling: efficiency improves as N grows — opposite to GPU O(N²) cost</div>
-      </div>
-      <div>
-        <div class="tech-block-title">ZEN-1 Benchmark Detail</div>
-        <div class="tech-item">Matrix fidelity 98.5% · Inference accuracy 99%</div>
-        <div class="tech-item">Latency: 7.2 ns (Loop Labs) vs 45.4 ns (NVIDIA A100) at N=64</div>
-        <div class="tech-item">Energy: 22 nJ (Loop Labs) vs 2,980 nJ (NVIDIA A100) at N=64</div>
-        <div class="tech-item">Modular Tensor Scalability enables efficient operation beyond 100+ channels</div>
-      </div>
-    </div>
-
-    <!-- Academic pedigree -->
-    <div class="origin-row">
-      <span class="origin-label">Academic origin</span>
-      <span class="origin-chip">Università degli Studi di Milano</span>
-      <span class="origin-chip">Politecnico di Milano</span>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
 <footer>
   <span class="foot-note">© 2025 Loop Labs · All rights reserved</span>
   <span class="foot-note">Confidential · Authorised recipients only</span>
@@ -935,17 +398,23 @@
 </div><!-- /content -->
 
 <script>
-  // ── Access gate ─────────────────────────────────────────────────────────
-  // To change the passphrase, edit the string on the next line only.
+  // ── Passphrase — change the string below to update the access code ──────
   const PASS = 'looplabs2025';
 
-  const gate    = document.getElementById('gate');
-  const content = document.getElementById('content');
-  const input   = document.getElementById('gate-input');
-  const errMsg  = document.getElementById('gate-error');
+  const gate   = document.getElementById('gate');
+  const content= document.getElementById('content');
+  const input  = document.getElementById('gate-input');
+  const errMsg = document.getElementById('gate-error');
 
   function unlock() {
     sessionStorage.setItem('dr_auth', '1');
+    // If redirected here from a sub-page, go back there after unlocking
+    const params   = new URLSearchParams(location.search);
+    const redirect = params.get('redirect');
+    if (redirect && /^dr-[a-z]+\.html$/.test(redirect)) {
+      location.href = redirect;
+      return;
+    }
     gate.classList.add('hide');
     content.classList.remove('locked');
     setTimeout(() => { gate.style.display = 'none'; }, 450);
@@ -1003,7 +472,7 @@
   // ── Navbar tint on scroll ───────────────────────────────────────────────
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').style.background =
-      window.scrollY > 20 ? 'rgba(8,7,9,0.98)' : 'rgba(8,7,9,0.92)';
+      window.scrollY > 20 ? 'rgba(5,10,18,0.98)' : 'rgba(5,10,18,0.92)';
   }, { passive: true });
 </script>
 

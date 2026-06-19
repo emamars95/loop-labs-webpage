@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    if (sessionStorage.getItem('dr_auth') !== '1') {
+      location.replace('dataroom.html?redirect=dr-documents.html');
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop Labs — Data Room · Documents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dataroom.css" />
+  <style>
+    /* ── Document table ────────────────────────────────────────────────── */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .doc-table th {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0 16px 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-table th:first-child { padding-left: 0; }
+
+    .doc-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(100,160,220,0.05);
+      font-size: 0.86rem;
+      vertical-align: middle;
+    }
+
+    .doc-table td:first-child { padding-left: 0; }
+    .doc-table tr:last-child td { border-bottom: none; }
+    .doc-table tr:hover td { background: rgba(100,160,220,0.03); }
+
+    .doc-name { font-weight: 500; }
+
+    .doc-cat {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .doc-contact {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .doc-contact a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 560px) {
+      .doc-table th:nth-child(2),
+      .doc-table td:nth-child(2) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="assets/logo.png" alt="Loop Labs" onerror="this.style.display='none'" />
+    Loop Labs
+  </div>
+  <div class="nav-badge">Restricted Access</div>
+  <a href="dataroom.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Data Room
+  </a>
+</nav>
+
+<section id="page-header">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="dataroom.html">Data Room</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current">Documents</span>
+    </div>
+    <h1 class="page-title">Files</h1>
+    <p class="page-desc">Core materials for authorised investors. Write to us to receive available documents.</p>
+  </div>
+</section>
+
+<section class="dr-section">
+  <div class="container">
+    <div class="section-label">B &nbsp;·&nbsp; Documents</div>
+
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Document</th>
+          <th>Category</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="doc-name">Executive Summary</div></td>
+          <td><div class="doc-cat">Overview</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">Pitch Deck</div></td>
+          <td><div class="doc-cat">Overview</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">ZEN-1 Technical Brief</div></td>
+          <td><div class="doc-cat">Technology</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">IP Portfolio Summary</div></td>
+          <td><div class="doc-cat">Legal</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">Financial Model</div></td>
+          <td><div class="doc-cat">Financials</div></td>
+          <td><span class="pill pill-purple"><span class="pill-dot"></span>In preparation</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">Cap Table</div></td>
+          <td><div class="doc-cat">Financials</div></td>
+          <td><span class="pill pill-muted"><span class="pill-dot"></span>On request</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="doc-contact">
+      To receive available documents write to
+      <a href="mailto:emanuele@oriqx.com">emanuele@oriqx.com</a>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <span class="foot-note">© 2025 Loop Labs · All rights reserved</span>
+  <span class="foot-note">Confidential · Authorised recipients only</span>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.background =
+      window.scrollY > 20 ? 'rgba(5,10,18,0.98)' : 'rgba(5,10,18,0.92)';
+  }, { passive: true });
+</script>
+
+</body>
+</html>
