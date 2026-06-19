@@ -8,30 +8,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ── Palette ──────────────────────────────────────────────────────
-       Deliberately warmer than the main site (#050a12 cold blue-black).
-       Gold is exclusive to this page — signals restricted access.
-    ─────────────────────────────────────────────────────────────────── */
+    /* ── Tokens ────────────────────────────────────────────────────────── */
     :root {
-      --ground:       #080709;
-      --surface:      #0f0e11;
-      --surface-2:    #151318;
-      --text:         #e8e2d8;
-      --muted:        #7a7078;
-      --border:       rgba(232,226,216,0.08);
-      --border-soft:  rgba(232,226,216,0.05);
-      --accent:       #00d4ff;
-      --gold:         #c9a84c;
-      --gold-dim:     rgba(201,168,76,0.10);
-      --gold-border:  rgba(201,168,76,0.22);
-      --font:         'Inter', sans-serif;
-      --mono:         'JetBrains Mono', monospace;
-      --radius:       10px;
+      --ground:      #080709;
+      --surface:     #0f0e11;
+      --surface-2:   #151318;
+      --surface-3:   #1c1a20;
+      --text:        #e8e2d8;
+      --muted:       #7a7078;
+      --border:      rgba(232,226,216,0.08);
+      --accent:      #00d4ff;
+      --green:       #39ff8e;
+      --gold:        #c9a84c;
+      --gold-dim:    rgba(201,168,76,0.10);
+      --gold-border: rgba(201,168,76,0.22);
+      --font:        'Inter', sans-serif;
+      --mono:        'JetBrains Mono', monospace;
+      --radius:      10px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--ground);
       color: var(--text);
@@ -39,12 +36,146 @@
       font-size: 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
     }
-
     a { color: inherit; text-decoration: none; }
 
-    /* ── Nav ─────────────────────────────────────────────────────────── */
+    /* ── Gate overlay ──────────────────────────────────────────────────── */
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: var(--ground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease;
+    }
+
+    #gate.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .gate-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 360px;
+      padding: 0 24px;
+    }
+
+    .gate-logo {
+      height: 26px;
+      width: auto;
+      margin-bottom: 36px;
+      opacity: 0.88;
+    }
+
+    .gate-badge {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: 4px;
+      padding: 4px 12px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gate-badge::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    .gate-heading {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .gate-sub {
+      font-size: 0.84rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .gate-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--text);
+      letter-spacing: 0.1em;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .gate-input:focus { border-color: rgba(201,168,76,0.45); }
+    .gate-input::placeholder { color: var(--muted); letter-spacing: 0.04em; font-size: 0.82rem; }
+
+    .gate-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #060506;
+      border: none;
+      border-radius: var(--radius);
+      padding: 13px 18px;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-bottom: 14px;
+    }
+
+    .gate-btn:hover { opacity: 0.85; }
+
+    .gate-error {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: #ff6b6b;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      min-height: 1.2em;
+    }
+
+    .gate-error.show { opacity: 1; }
+
+    /* ── Content (blurred while gate is active) ────────────────────────── */
+    #content {
+      transition: filter 0.4s ease;
+    }
+
+    #content.locked {
+      filter: blur(8px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ── Nav ───────────────────────────────────────────────────────────── */
     #navbar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -66,15 +197,14 @@
       gap: 10px;
       font-weight: 700;
       font-size: 0.95rem;
-      letter-spacing: -0.01em;
     }
 
     .nav-logo img { height: 22px; width: auto; }
 
-    .nav-center {
+    .nav-badge {
       font-family: var(--mono);
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.66rem;
+      font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--gold);
@@ -87,17 +217,12 @@
       gap: 8px;
     }
 
-    .nav-center::before {
+    .nav-badge::before {
       content: '';
-      width: 6px; height: 6px;
+      width: 5px; height: 5px;
       border-radius: 50%;
       background: var(--gold);
-      animation: pulse-gold 2.4s ease-in-out infinite;
-    }
-
-    @keyframes pulse-gold {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.25; }
+      animation: pulse 2.4s ease-in-out infinite;
     }
 
     .nav-back {
@@ -105,17 +230,16 @@
       align-items: center;
       gap: 7px;
       font-family: var(--mono);
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--muted);
       transition: color 0.2s;
     }
 
     .nav-back:hover { color: var(--text); }
-
     .nav-back svg { transition: transform 0.2s; flex-shrink: 0; }
     .nav-back:hover svg { transform: translateX(-2px); }
 
-    /* ── Header ──────────────────────────────────────────────────────── */
+    /* ── Header ────────────────────────────────────────────────────────── */
     #dr-header {
       position: relative;
       padding: 128px 0 72px;
@@ -142,7 +266,7 @@
 
     .dr-eyebrow {
       font-family: var(--mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -156,7 +280,6 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text);
       line-height: 1;
       margin-bottom: 32px;
       text-shadow: 0 0 100px rgba(201,168,76,0.1);
@@ -171,199 +294,338 @@
 
     .meta-item {
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
       letter-spacing: 0.05em;
     }
 
     .meta-sep {
-      width: 1px;
-      height: 12px;
+      width: 1px; height: 12px;
       background: var(--border);
       flex-shrink: 0;
     }
 
-    /* ── Main container ──────────────────────────────────────────────── */
+    /* ── Layout ────────────────────────────────────────────────────────── */
     .container {
       max-width: 1120px;
       margin: 0 auto;
       padding: 0 40px;
     }
 
-    /* ── Sections ────────────────────────────────────────────────────── */
-    #sections {
-      padding: 72px 0 120px;
+    .dr-section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .sections-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .section-panel {
-      background: var(--surface);
-      padding: 40px 36px 44px;
-      display: flex;
-      flex-direction: column;
-      min-height: 500px;
-      transition: background 0.22s ease;
-    }
-
-    .section-panel:hover { background: var(--surface-2); }
-
-    .panel-header {
-      margin-bottom: 32px;
-    }
-
-    .panel-id {
+    .section-label {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.63rem;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 32px;
     }
 
-    .panel-id::after {
+    .section-label::after {
       content: '';
       flex: 1;
       height: 1px;
       background: var(--border);
     }
 
-    .panel-title {
-      font-size: 1.3rem;
+    .section-title {
+      font-size: 1.55rem;
       font-weight: 700;
-      letter-spacing: -0.025em;
-      color: var(--text);
+      letter-spacing: -0.03em;
       margin-bottom: 8px;
     }
 
-    .panel-desc {
-      font-size: 0.85rem;
+    .section-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 44px;
+      max-width: 540px;
+    }
+
+    /* ── A — People ────────────────────────────────────────────────────── */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .person-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .person-card.placeholder {
+      border-style: dashed;
+      border-color: rgba(232,226,216,0.1);
+      background: transparent;
+    }
+
+    .person-avatar {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .person-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .person-avatar svg { opacity: 0.28; }
+
+    .person-name {
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: -0.01em;
+    }
+
+    .person-role {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    .person-bio {
+      font-size: 0.83rem;
       color: var(--muted);
       line-height: 1.65;
     }
 
-    /* ── Empty states ────────────────────────────────────────────────── */
-    .empty-state {
-      flex: 1;
+    .person-links {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 1px dashed rgba(232,226,216,0.09);
-      border-radius: 8px;
-      padding: 36px 20px;
-      gap: 22px;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 6px;
     }
 
-    .empty-visual { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .person-link {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      color: var(--muted);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      transition: color 0.2s, border-color 0.2s;
+    }
 
-    .empty-msg {
+    .person-link:hover {
+      color: var(--text);
+      border-color: rgba(232,226,216,0.2);
+    }
+
+    /* ── B — Documents ─────────────────────────────────────────────────── */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .doc-table th {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0 16px 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-table th:first-child { padding-left: 0; }
+
+    .doc-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(232,226,216,0.04);
+      font-size: 0.86rem;
+      vertical-align: middle;
+    }
+
+    .doc-table td:first-child { padding-left: 0; }
+    .doc-table tr:last-child td { border-bottom: none; }
+    .doc-table tr:hover td { background: rgba(232,226,216,0.015); }
+
+    .doc-name { font-weight: 500; }
+
+    .doc-cat {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 3px 10px;
+      white-space: nowrap;
+    }
+
+    .pill-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .pill-green {
+      color: var(--green);
+      background: rgba(57,255,142,0.08);
+      border: 1px solid rgba(57,255,142,0.2);
+    }
+
+    .pill-gold {
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+    }
+
+    .pill-muted {
+      color: var(--muted);
+      background: rgba(232,226,216,0.04);
+      border: 1px solid var(--border);
+    }
+
+    .doc-contact {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 24px;
+    }
+
+    .doc-contact a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── C — Technology ────────────────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+
+    .stat-cell {
+      background: var(--surface);
+      padding: 28px 24px;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .stat-sub {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .c { color: var(--accent); }
+    .g { color: var(--green); }
+
+    .tech-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .tech-block-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .tech-item::before {
+      content: '·';
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .origin-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    .origin-label {
       font-family: var(--mono);
       font-size: 0.68rem;
       color: var(--muted);
       letter-spacing: 0.06em;
-      opacity: 0.65;
     }
 
-    .empty-badge {
+    .origin-chip {
       font-family: var(--mono);
-      font-size: 0.66rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      background: rgba(232,226,216,0.04);
+      font-size: 0.7rem;
+      color: var(--text);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 4px;
-      padding: 4px 10px;
+      padding: 4px 12px;
     }
 
-    /* People: avatar stack */
-    .avatar-row {
-      display: flex;
-      justify-content: center;
-    }
-
-    .avatar-ghost {
-      width: 46px; height: 46px;
-      border-radius: 50%;
-      background: rgba(232,226,216,0.05);
-      border: 1.5px solid rgba(232,226,216,0.1);
-      margin-left: -10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .avatar-ghost:first-child { margin-left: 0; }
-
-    .avatar-ghost svg { opacity: 0.22; }
-
-    .redact-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      width: 120px;
-    }
-
-    .redact-line {
-      height: 5px;
-      border-radius: 3px;
-      background: rgba(232,226,216,0.07);
-    }
-
-    /* Documents: file stack */
-    .doc-row {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-    }
-
-    .doc-ghost {
-      width: 46px; height: 58px;
-      border-radius: 4px 10px 4px 4px;
-      border: 1.5px solid rgba(232,226,216,0.1);
-      background: rgba(232,226,216,0.03);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 8px 6px;
-      gap: 5px;
-      overflow: hidden;
-    }
-
-    .doc-ghost::before {
-      content: '';
-      position: absolute;
-      top: -1px; right: -1px;
-      width: 14px; height: 14px;
-      background: var(--surface);
-      border-left: 1.5px solid rgba(232,226,216,0.1);
-      border-bottom: 1.5px solid rgba(232,226,216,0.1);
-    }
-
-    .doc-rule {
-      width: 100%;
-      height: 3px;
-      border-radius: 2px;
-      background: rgba(232,226,216,0.08);
-    }
-
-    /* ── Footer ──────────────────────────────────────────────────────── */
+    /* ── Footer ────────────────────────────────────────────────────────── */
     footer {
       border-top: 1px solid var(--border);
       padding: 28px 40px;
@@ -376,35 +638,65 @@
 
     .foot-note {
       font-family: var(--mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--muted);
       letter-spacing: 0.04em;
     }
 
-    /* ── Responsive ──────────────────────────────────────────────────── */
+    /* ── Responsive ────────────────────────────────────────────────────── */
     @media (max-width: 860px) {
-      .sections-grid   { grid-template-columns: 1fr; }
-      #navbar          { padding: 0 20px; }
-      .header-inner    { padding: 0 20px; }
-      .container       { padding: 0 20px; }
-      .section-panel   { min-height: 380px; }
-      footer           { padding: 24px 20px; justify-content: center; text-align: center; }
+      #navbar, footer         { padding: 0 20px; }
+      footer                  { padding: 24px 20px; }
+      .header-inner, .container { padding: 0 20px; }
+      .stats-grid             { grid-template-columns: repeat(2, 1fr); }
+      .tech-cols              { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    @media (max-width: 560px) {
+      .doc-table th:nth-child(2),
+      .doc-table td:nth-child(2) { display: none; }
+      .people-grid            { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .nav-center::before { animation: none; }
+      .gate-badge::before,
+      .nav-badge::before { animation: none; }
+      #gate, #content { transition: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── Nav ────────────────────────────────────────────────────────────── -->
+<!-- ── Gate ─────────────────────────────────────────────────────────────── -->
+<div id="gate">
+  <div class="gate-box">
+    <img src="assets/logo.png" class="gate-logo" alt="Loop Labs" onerror="this.style.display='none'" />
+    <div class="gate-badge">Restricted Access</div>
+    <h1 class="gate-heading">Data Room</h1>
+    <p class="gate-sub">Enter your access code to continue.</p>
+    <input
+      type="password"
+      id="gate-input"
+      class="gate-input"
+      placeholder="Access code"
+      autocomplete="off"
+      autofocus
+    />
+    <button id="gate-btn" class="gate-btn">Enter Data Room</button>
+    <div id="gate-error" class="gate-error">Incorrect access code — please try again.</div>
+  </div>
+</div>
+
+<!-- ── Main content ──────────────────────────────────────────────────────── -->
+<div id="content" class="locked">
+
+<!-- Nav -->
 <nav id="navbar">
   <div class="nav-logo">
     <img src="assets/logo.png" alt="Loop Labs" onerror="this.style.display='none'" />
     Loop Labs
   </div>
-  <div class="nav-center">Restricted Access</div>
+  <div class="nav-badge">Restricted Access</div>
   <a href="index.html" class="nav-back">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
       <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -413,7 +705,7 @@
   </a>
 </nav>
 
-<!-- ── Header ─────────────────────────────────────────────────────────── -->
+<!-- Header -->
 <section id="dr-header">
   <canvas id="interference-canvas"></canvas>
   <div class="header-inner">
@@ -422,127 +714,207 @@
     <div class="dr-meta">
       <span class="meta-item">3 sections</span>
       <span class="meta-sep"></span>
-      <span class="meta-item">0 documents</span>
+      <span class="meta-item">6 documents</span>
       <span class="meta-sep"></span>
-      <span class="meta-item">Access: authorised recipients only</span>
+      <span class="meta-item">Authorised recipients only</span>
     </div>
   </div>
 </section>
 
-<!-- ── Section panels ─────────────────────────────────────────────────── -->
-<section id="sections">
+<!-- ── A — People ────────────────────────────────────────────────────────── -->
+<section class="dr-section" id="section-people">
   <div class="container">
-    <div class="sections-grid">
+    <div class="section-label">A &nbsp;·&nbsp; People</div>
+    <div class="section-title">Team</div>
+    <div class="section-desc">Founders and key contributors building Loop Labs.</div>
 
-      <!-- A — People -->
-      <div class="section-panel">
-        <div class="panel-header">
-          <div class="panel-id">A &nbsp;·&nbsp; People</div>
-          <div class="panel-title">Team</div>
-          <div class="panel-desc">
-            Founders, researchers, and advisors shaping Loop Labs.
-          </div>
+    <div class="people-grid">
+      <!--
+        Replace this placeholder with real cards.
+        Duplicate the block for each team member.
+        To add a photo, replace the <svg> inside .person-avatar with:
+        <img src="assets/your-photo.jpg" alt="Name" />
+      -->
+      <div class="person-card placeholder">
+        <div class="person-avatar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="5" stroke="#e8e2d8" stroke-width="1.4"/>
+            <path d="M3 22c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
         </div>
-        <div class="empty-state">
-          <div class="empty-visual">
-            <div class="avatar-row">
-              <div class="avatar-ghost">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <circle cx="11" cy="8" r="4.5" stroke="#e8e2d8" stroke-width="1.4"/>
-                  <path d="M3 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="avatar-ghost">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <circle cx="11" cy="8" r="4.5" stroke="#e8e2d8" stroke-width="1.4"/>
-                  <path d="M3 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="avatar-ghost">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <circle cx="11" cy="8" r="4.5" stroke="#e8e2d8" stroke-width="1.4"/>
-                  <path d="M3 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-              </div>
-            </div>
-            <div class="redact-block">
-              <div class="redact-line" style="width:72%"></div>
-              <div class="redact-line" style="width:52%"></div>
-            </div>
-          </div>
-          <div class="empty-msg">No profiles added yet</div>
-          <div class="empty-badge">Coming soon</div>
+        <div>
+          <div class="person-name" style="color:var(--muted);font-style:italic;">Your name</div>
+          <div class="person-role">Co-founder · Role</div>
+        </div>
+        <div class="person-bio">Add a short bio — research background, previous experience, and what you bring to Loop Labs.</div>
+        <div class="person-links">
+          <a href="#" class="person-link">LinkedIn</a>
+          <a href="#" class="person-link">Scholar</a>
         </div>
       </div>
-
-      <!-- B — Documents -->
-      <div class="section-panel">
-        <div class="panel-header">
-          <div class="panel-id">B &nbsp;·&nbsp; Documents</div>
-          <div class="panel-title">Files</div>
-          <div class="panel-desc">
-            Pitch deck, financials, legal, and supporting materials.
-          </div>
-        </div>
-        <div class="empty-state">
-          <div class="empty-visual">
-            <div class="doc-row">
-              <div class="doc-ghost">
-                <div class="doc-rule"></div>
-                <div class="doc-rule" style="width:70%"></div>
-                <div class="doc-rule" style="width:50%"></div>
-              </div>
-              <div class="doc-ghost">
-                <div class="doc-rule"></div>
-                <div class="doc-rule" style="width:70%"></div>
-                <div class="doc-rule" style="width:50%"></div>
-              </div>
-              <div class="doc-ghost">
-                <div class="doc-rule"></div>
-                <div class="doc-rule" style="width:70%"></div>
-                <div class="doc-rule" style="width:50%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="empty-msg">No documents uploaded yet</div>
-          <div class="empty-badge">Coming soon</div>
-        </div>
-      </div>
-
-      <!-- C — Technology -->
-      <div class="section-panel">
-        <div class="panel-header">
-          <div class="panel-id">C &nbsp;·&nbsp; Technology</div>
-          <div class="panel-title">Technical</div>
-          <div class="panel-desc">
-            Architecture deep-dives, benchmarks, and research papers.
-          </div>
-        </div>
-        <div class="empty-state">
-          <div class="empty-visual">
-            <canvas id="tech-diagram" width="130" height="80" style="opacity:0.5;"></canvas>
-          </div>
-          <div class="empty-msg">No technical files added yet</div>
-          <div class="empty-badge">Coming soon</div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ── Footer ─────────────────────────────────────────────────────────── -->
+<!-- ── B — Documents ─────────────────────────────────────────────────────── -->
+<section class="dr-section" id="section-documents">
+  <div class="container">
+    <div class="section-label">B &nbsp;·&nbsp; Documents</div>
+    <div class="section-title">Files</div>
+    <div class="section-desc">Core materials for authorised investors. Contact us to receive available documents.</div>
+
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Document</th>
+          <th>Category</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="doc-name">Executive Summary</div></td>
+          <td><div class="doc-cat">Overview</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">Pitch Deck</div></td>
+          <td><div class="doc-cat">Overview</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">ZEN-1 Technical Brief</div></td>
+          <td><div class="doc-cat">Technology</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">IP Portfolio Summary</div></td>
+          <td><div class="doc-cat">Legal</div></td>
+          <td><span class="pill pill-green"><span class="pill-dot"></span>Available</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">Financial Model</div></td>
+          <td><div class="doc-cat">Financials</div></td>
+          <td><span class="pill pill-gold"><span class="pill-dot"></span>In preparation</span></td>
+        </tr>
+        <tr>
+          <td><div class="doc-name">Cap Table</div></td>
+          <td><div class="doc-cat">Financials</div></td>
+          <td><span class="pill pill-muted"><span class="pill-dot"></span>On request</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="doc-contact">
+      To receive available documents, write to
+      <a href="mailto:emanuele@oriqx.com">emanuele@oriqx.com</a>
+    </p>
+  </div>
+</section>
+
+<!-- ── C — Technology ────────────────────────────────────────────────────── -->
+<section class="dr-section" id="section-technology">
+  <div class="container">
+    <div class="section-label">C &nbsp;·&nbsp; Technology</div>
+    <div class="section-title">Technical Overview</div>
+    <div class="section-desc">Key results from the ZEN-1 prototype and a summary of the core architecture.</div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-label">Energy / Operation</div>
+        <div class="stat-value"><span class="c">33.5</span></div>
+        <div class="stat-sub">fJ/OP · ZEN-1 prototype</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Throughput</div>
+        <div class="stat-value"><span class="c">0.64</span></div>
+        <div class="stat-sub">TOPS · ZEN-1 prototype</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Speed vs A100</div>
+        <div class="stat-value"><span class="g">6×</span></div>
+        <div class="stat-sub">faster · N=64 benchmark</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Energy vs A100</div>
+        <div class="stat-value"><span class="g">135×</span></div>
+        <div class="stat-sub">lower · N=64 benchmark</div>
+      </div>
+    </div>
+
+    <!-- Architecture + benchmark -->
+    <div class="tech-cols">
+      <div>
+        <div class="tech-block-title">Architecture</div>
+        <div class="tech-item">Thin-film lithium niobate (TFLN) platform at 1550 nm telecom wavelength, CMOS-compatible fabrication</div>
+        <div class="tech-item">Loop architecture — recirculating time-bin encoding replaces large spatial MZM arrays, dramatically reducing footprint</div>
+        <div class="tech-item">On-chip optical non-linear activation eliminates the optical-to-electrical conversion bottleneck</div>
+        <div class="tech-item">Inverse power scaling: efficiency improves as N grows — opposite to GPU O(N²) cost</div>
+      </div>
+      <div>
+        <div class="tech-block-title">ZEN-1 Benchmark Detail</div>
+        <div class="tech-item">Matrix fidelity 98.5% · Inference accuracy 99%</div>
+        <div class="tech-item">Latency: 7.2 ns (Loop Labs) vs 45.4 ns (NVIDIA A100) at N=64</div>
+        <div class="tech-item">Energy: 22 nJ (Loop Labs) vs 2,980 nJ (NVIDIA A100) at N=64</div>
+        <div class="tech-item">Modular Tensor Scalability enables efficient operation beyond 100+ channels</div>
+      </div>
+    </div>
+
+    <!-- Academic pedigree -->
+    <div class="origin-row">
+      <span class="origin-label">Academic origin</span>
+      <span class="origin-chip">Università degli Studi di Milano</span>
+      <span class="origin-chip">Politecnico di Milano</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
 <footer>
   <span class="foot-note">© 2025 Loop Labs · All rights reserved</span>
-  <span class="foot-note">Confidential · Intended for authorised recipients only</span>
+  <span class="foot-note">Confidential · Authorised recipients only</span>
 </footer>
 
-<script>
-  // ── Optical interference pattern — header background ─────────────────
-  (function () {
-    const canvas = document.getElementById('interference-canvas');
-    const section = document.getElementById('dr-header');
+</div><!-- /content -->
 
+<script>
+  // ── Access gate ─────────────────────────────────────────────────────────
+  // To change the passphrase, edit the string on the next line only.
+  const PASS = 'looplabs2025';
+
+  const gate    = document.getElementById('gate');
+  const content = document.getElementById('content');
+  const input   = document.getElementById('gate-input');
+  const errMsg  = document.getElementById('gate-error');
+
+  function unlock() {
+    sessionStorage.setItem('dr_auth', '1');
+    gate.classList.add('hide');
+    content.classList.remove('locked');
+    setTimeout(() => { gate.style.display = 'none'; }, 450);
+  }
+
+  function attempt() {
+    if (input.value === PASS) {
+      unlock();
+    } else {
+      errMsg.classList.add('show');
+      input.value = '';
+      input.focus();
+      setTimeout(() => errMsg.classList.remove('show'), 3000);
+    }
+  }
+
+  document.getElementById('gate-btn').addEventListener('click', attempt);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
+
+  if (sessionStorage.getItem('dr_auth') === '1') unlock();
+
+  // ── Interference pattern (header) ───────────────────────────────────────
+  (function () {
+    const canvas  = document.getElementById('interference-canvas');
+    const section = document.getElementById('dr-header');
     function draw() {
       canvas.width  = section.offsetWidth;
       canvas.height = section.offsetHeight;
@@ -550,64 +922,29 @@
       const W = canvas.width, H = canvas.height;
       const img = ctx.createImageData(W, H);
       const d   = img.data;
-      // Two coherent point sources — mirrors Loop Labs' physics
       const s1x = W * 0.30, s1y = H * 0.50;
       const s2x = W * 0.70, s2y = H * 0.50;
-      const lam = 42; // "wavelength" in pixels
+      const lam = 42;
       for (let y = 0; y < H; y++) {
         for (let x = 0; x < W; x++) {
           const r1 = Math.sqrt((x - s1x) ** 2 + (y - s1y) ** 2);
           const r2 = Math.sqrt((x - s2x) ** 2 + (y - s2y) ** 2);
-          const v  = Math.cos(2 * Math.PI * r1 / lam)
-                   + Math.cos(2 * Math.PI * r2 / lam);
-          const n  = (v + 2) / 4;           // 0 → 1
+          const v  = Math.cos(2 * Math.PI * r1 / lam) + Math.cos(2 * Math.PI * r2 / lam);
+          const n  = (v + 2) / 4;
           const i  = (y * W + x) * 4;
-          d[i]   = Math.round(201 * n);      // gold R
-          d[i+1] = Math.round(168 * n);      // gold G
-          d[i+2] = Math.round(76  * n);      // gold B
+          d[i]   = Math.round(201 * n);
+          d[i+1] = Math.round(168 * n);
+          d[i+2] = Math.round(76  * n);
           d[i+3] = 255;
         }
       }
       ctx.putImageData(img, 0, 0);
     }
-
     draw();
     window.addEventListener('resize', draw);
   })();
 
-  // ── Technology section placeholder diagram ────────────────────────────
-  (function () {
-    const c = document.getElementById('tech-diagram');
-    if (!c) return;
-    const ctx = c.getContext('2d');
-    const nodes = [
-      {x:14,y:40}, {x:38,y:18}, {x:38,y:62}, {x:68,y:10},
-      {x:68,y:40}, {x:68,y:70}, {x:98,y:25}, {x:98,y:55}, {x:118,y:40}
-    ];
-    const edges = [
-      [0,1],[0,2],[1,3],[1,4],[2,4],[2,5],
-      [3,6],[4,6],[4,7],[5,7],[6,8],[7,8]
-    ];
-    ctx.strokeStyle = 'rgba(232,226,216,0.15)';
-    ctx.lineWidth = 1;
-    edges.forEach(([a,b]) => {
-      ctx.beginPath();
-      ctx.moveTo(nodes[a].x, nodes[a].y);
-      ctx.lineTo(nodes[b].x, nodes[b].y);
-      ctx.stroke();
-    });
-    nodes.forEach(n => {
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(232,226,216,0.16)';
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(232,226,216,0.3)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-    });
-  })();
-
-  // ── Navbar opacity on scroll ──────────────────────────────────────────
+  // ── Navbar tint on scroll ───────────────────────────────────────────────
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').style.background =
       window.scrollY > 20 ? 'rgba(8,7,9,0.98)' : 'rgba(8,7,9,0.92)';
