@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop Labs — Data Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Palette ──────────────────────────────────────────────────────
+       Deliberately warmer than the main site (#050a12 cold blue-black).
+       Gold is exclusive to this page — signals restricted access.
+    ─────────────────────────────────────────────────────────────────── */
+    :root {
+      --ground:       #080709;
+      --surface:      #0f0e11;
+      --surface-2:    #151318;
+      --text:         #e8e2d8;
+      --muted:        #7a7078;
+      --border:       rgba(232,226,216,0.08);
+      --border-soft:  rgba(232,226,216,0.05);
+      --accent:       #00d4ff;
+      --gold:         #c9a84c;
+      --gold-dim:     rgba(201,168,76,0.10);
+      --gold-border:  rgba(201,168,76,0.22);
+      --font:         'Inter', sans-serif;
+      --mono:         'JetBrains Mono', monospace;
+      --radius:       10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ground);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ─────────────────────────────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(8,7,9,0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo img { height: 22px; width: auto; }
+
+    .nav-center {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: 4px;
+      padding: 4px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-center::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse-gold 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-gold {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.25; }
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--text); }
+
+    .nav-back svg { transition: transform 0.2s; flex-shrink: 0; }
+    .nav-back:hover svg { transform: translateX(-2px); }
+
+    /* ── Header ──────────────────────────────────────────────────────── */
+    #dr-header {
+      position: relative;
+      padding: 128px 0 72px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #interference-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.16;
+      pointer-events: none;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .dr-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .dr-title {
+      font-family: var(--mono);
+      font-size: clamp(2.8rem, 7vw, 6.5rem);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 32px;
+      text-shadow: 0 0 100px rgba(201,168,76,0.1);
+    }
+
+    .dr-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .meta-sep {
+      width: 1px;
+      height: 12px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ── Main container ──────────────────────────────────────────────── */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ── Sections ────────────────────────────────────────────────────── */
+    #sections {
+      padding: 72px 0 120px;
+    }
+
+    .sections-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .section-panel {
+      background: var(--surface);
+      padding: 40px 36px 44px;
+      display: flex;
+      flex-direction: column;
+      min-height: 500px;
+      transition: background 0.22s ease;
+    }
+
+    .section-panel:hover { background: var(--surface-2); }
+
+    .panel-header {
+      margin-bottom: 32px;
+    }
+
+    .panel-id {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .panel-id::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .panel-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .panel-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Empty states ────────────────────────────────────────────────── */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(232,226,216,0.09);
+      border-radius: 8px;
+      padding: 36px 20px;
+      gap: 22px;
+    }
+
+    .empty-visual { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+    .empty-msg {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      opacity: 0.65;
+    }
+
+    .empty-badge {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(232,226,216,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
+
+    /* People: avatar stack */
+    .avatar-row {
+      display: flex;
+      justify-content: center;
+    }
+
+    .avatar-ghost {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: rgba(232,226,216,0.05);
+      border: 1.5px solid rgba(232,226,216,0.1);
+      margin-left: -10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-ghost:first-child { margin-left: 0; }
+
+    .avatar-ghost svg { opacity: 0.22; }
+
+    .redact-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 120px;
+    }
+
+    .redact-line {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(232,226,216,0.07);
+    }
+
+    /* Documents: file stack */
+    .doc-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .doc-ghost {
+      width: 46px; height: 58px;
+      border-radius: 4px 10px 4px 4px;
+      border: 1.5px solid rgba(232,226,216,0.1);
+      background: rgba(232,226,216,0.03);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 8px 6px;
+      gap: 5px;
+      overflow: hidden;
+    }
+
+    .doc-ghost::before {
+      content: '';
+      position: absolute;
+      top: -1px; right: -1px;
+      width: 14px; height: 14px;
+      background: var(--surface);
+      border-left: 1.5px solid rgba(232,226,216,0.1);
+      border-bottom: 1.5px solid rgba(232,226,216,0.1);
+    }
+
+    .doc-rule {
+      width: 100%;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(232,226,216,0.08);
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .foot-note {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .sections-grid   { grid-template-columns: 1fr; }
+      #navbar          { padding: 0 20px; }
+      .header-inner    { padding: 0 20px; }
+      .container       { padding: 0 20px; }
+      .section-panel   { min-height: 380px; }
+      footer           { padding: 24px 20px; justify-content: center; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-center::before { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ────────────────────────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="assets/logo.png" alt="Loop Labs" onerror="this.style.display='none'" />
+    Loop Labs
+  </div>
+  <div class="nav-center">Restricted Access</div>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to site
+  </a>
+</nav>
+
+<!-- ── Header ─────────────────────────────────────────────────────────── -->
+<section id="dr-header">
+  <canvas id="interference-canvas"></canvas>
+  <div class="header-inner">
+    <div class="dr-eyebrow">Loop Labs · Stealth Mode</div>
+    <div class="dr-title">Data Room</div>
+    <div class="dr-meta">
+      <span class="meta-item">3 sections</span>
+      <span class="meta-sep"></span>
+      <span class="meta-item">0 documents</span>
+      <span class="meta-sep"></span>
+      <span class="meta-item">Access: authorised recipients only</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section panels ─────────────────────────────────────────────────── -->
+<section id="sections">
+  <div class="container">
+    <div class="sections-grid">
+
+      <!-- A — People -->
+      <div class="section-panel">
+        <div class="panel-header">
+          <div class="panel-id">A &nbsp;·&nbsp; People</div>
+          <div class="panel-title">Team</div>
+          <div class="panel-desc">
+            Founders, researchers, and advisors shaping Loop Labs.
+          </div>
+        </div>
+        <div class="empty-state">
+          <div class="empty-visual">
+            <div class="avatar-row">
+              <div class="avatar-ghost">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <circle cx="11" cy="8" r="4.5" stroke="#e8e2d8" stroke-width="1.4"/>
+                  <path d="M3 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="avatar-ghost">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <circle cx="11" cy="8" r="4.5" stroke="#e8e2d8" stroke-width="1.4"/>
+                  <path d="M3 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="avatar-ghost">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <circle cx="11" cy="8" r="4.5" stroke="#e8e2d8" stroke-width="1.4"/>
+                  <path d="M3 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#e8e2d8" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="redact-block">
+              <div class="redact-line" style="width:72%"></div>
+              <div class="redact-line" style="width:52%"></div>
+            </div>
+          </div>
+          <div class="empty-msg">No profiles added yet</div>
+          <div class="empty-badge">Coming soon</div>
+        </div>
+      </div>
+
+      <!-- B — Documents -->
+      <div class="section-panel">
+        <div class="panel-header">
+          <div class="panel-id">B &nbsp;·&nbsp; Documents</div>
+          <div class="panel-title">Files</div>
+          <div class="panel-desc">
+            Pitch deck, financials, legal, and supporting materials.
+          </div>
+        </div>
+        <div class="empty-state">
+          <div class="empty-visual">
+            <div class="doc-row">
+              <div class="doc-ghost">
+                <div class="doc-rule"></div>
+                <div class="doc-rule" style="width:70%"></div>
+                <div class="doc-rule" style="width:50%"></div>
+              </div>
+              <div class="doc-ghost">
+                <div class="doc-rule"></div>
+                <div class="doc-rule" style="width:70%"></div>
+                <div class="doc-rule" style="width:50%"></div>
+              </div>
+              <div class="doc-ghost">
+                <div class="doc-rule"></div>
+                <div class="doc-rule" style="width:70%"></div>
+                <div class="doc-rule" style="width:50%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="empty-msg">No documents uploaded yet</div>
+          <div class="empty-badge">Coming soon</div>
+        </div>
+      </div>
+
+      <!-- C — Technology -->
+      <div class="section-panel">
+        <div class="panel-header">
+          <div class="panel-id">C &nbsp;·&nbsp; Technology</div>
+          <div class="panel-title">Technical</div>
+          <div class="panel-desc">
+            Architecture deep-dives, benchmarks, and research papers.
+          </div>
+        </div>
+        <div class="empty-state">
+          <div class="empty-visual">
+            <canvas id="tech-diagram" width="130" height="80" style="opacity:0.5;"></canvas>
+          </div>
+          <div class="empty-msg">No technical files added yet</div>
+          <div class="empty-badge">Coming soon</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────── -->
+<footer>
+  <span class="foot-note">© 2025 Loop Labs · All rights reserved</span>
+  <span class="foot-note">Confidential · Intended for authorised recipients only</span>
+</footer>
+
+<script>
+  // ── Optical interference pattern — header background ─────────────────
+  (function () {
+    const canvas = document.getElementById('interference-canvas');
+    const section = document.getElementById('dr-header');
+
+    function draw() {
+      canvas.width  = section.offsetWidth;
+      canvas.height = section.offsetHeight;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const img = ctx.createImageData(W, H);
+      const d   = img.data;
+      // Two coherent point sources — mirrors Loop Labs' physics
+      const s1x = W * 0.30, s1y = H * 0.50;
+      const s2x = W * 0.70, s2y = H * 0.50;
+      const lam = 42; // "wavelength" in pixels
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const r1 = Math.sqrt((x - s1x) ** 2 + (y - s1y) ** 2);
+          const r2 = Math.sqrt((x - s2x) ** 2 + (y - s2y) ** 2);
+          const v  = Math.cos(2 * Math.PI * r1 / lam)
+                   + Math.cos(2 * Math.PI * r2 / lam);
+          const n  = (v + 2) / 4;           // 0 → 1
+          const i  = (y * W + x) * 4;
+          d[i]   = Math.round(201 * n);      // gold R
+          d[i+1] = Math.round(168 * n);      // gold G
+          d[i+2] = Math.round(76  * n);      // gold B
+          d[i+3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+
+    draw();
+    window.addEventListener('resize', draw);
+  })();
+
+  // ── Technology section placeholder diagram ────────────────────────────
+  (function () {
+    const c = document.getElementById('tech-diagram');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const nodes = [
+      {x:14,y:40}, {x:38,y:18}, {x:38,y:62}, {x:68,y:10},
+      {x:68,y:40}, {x:68,y:70}, {x:98,y:25}, {x:98,y:55}, {x:118,y:40}
+    ];
+    const edges = [
+      [0,1],[0,2],[1,3],[1,4],[2,4],[2,5],
+      [3,6],[4,6],[4,7],[5,7],[6,8],[7,8]
+    ];
+    ctx.strokeStyle = 'rgba(232,226,216,0.15)';
+    ctx.lineWidth = 1;
+    edges.forEach(([a,b]) => {
+      ctx.beginPath();
+      ctx.moveTo(nodes[a].x, nodes[a].y);
+      ctx.lineTo(nodes[b].x, nodes[b].y);
+      ctx.stroke();
+    });
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(232,226,216,0.16)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(232,226,216,0.3)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+  })();
+
+  // ── Navbar opacity on scroll ──────────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.background =
+      window.scrollY > 20 ? 'rgba(8,7,9,0.98)' : 'rgba(8,7,9,0.92)';
+  }, { passive: true });
+</script>
+
+</body>
+</html>
